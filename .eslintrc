@@ -1,0 +1,24 @@
+{
+  "extends": "auto",
+  "plugins": ["import-helpers"],
+  "rules": {
+    "import-helpers/order-imports": [
+      "warn",
+      {
+        "newlinesBetween": "always",
+        "groups": [
+          "/^react$/",
+          "module",
+          "/^@/",
+          "/^components/",
+          "/^config/",
+          "/^utils/",
+          ["parent", "sibling", "index"]
+        ],
+        "alphabetize": { "order": "asc", "ignoreCase": true }
+      }
+    ],
+    "simple-import-sort/imports": 0,
+    "react/require-default-props": 0
+  }
+}
