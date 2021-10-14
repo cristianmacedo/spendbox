@@ -2,9 +2,11 @@ import React from 'react';
 
 import { ChakraProvider, theme } from '@chakra-ui/react';
 
+import Header from 'components/Header';
+
 const App = (): JSX.Element => (
   <ChakraProvider theme={theme}>
-    <h1>SpendBox</h1>
+    <Header />
   </ChakraProvider>
 );
 
