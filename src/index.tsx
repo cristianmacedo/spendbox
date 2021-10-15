@@ -6,12 +6,13 @@ import { ColorModeScript } from '@chakra-ui/react';
 
 import reportWebVitals from 'config/reportWebVitals';
 import serviceWorker from 'config/serviceWorker';
+import theme from 'config/theme';
 
 import App from './App';
 
 ReactDOM.render(
   <React.StrictMode>
-    <ColorModeScript />
+    <ColorModeScript initialColorMode={theme.initialColorMode} />
     <App />
   </React.StrictMode>,
   document.querySelector('#root')
