@@ -2,6 +2,12 @@
   "extends": "auto",
   "plugins": ["import-helpers"],
   "rules": {
+    "@typescript-eslint/no-redeclare": [
+      "error",
+      {
+        "builtinGlobals": false
+      }
+    ],
     "import-helpers/order-imports": [
       "warn",
       {
@@ -10,9 +16,11 @@
           "/^react$/",
           "module",
           "/^@/",
-          "/^components/",
           "/^config/",
+          "/^domains/",
           "/^utils/",
+          "/^hooks/",
+          "/^components/",
           ["parent", "sibling", "index"]
         ],
         "alphabetize": { "order": "asc", "ignoreCase": true }

@@ -2,7 +2,6 @@ import React from 'react';
 
 import { FaGithub } from 'react-icons/fa';
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 import { Flex, Text, Button } from '@chakra-ui/react';
 
 import { APP_NAME, STYLE_SPACING } from 'config/constants';
