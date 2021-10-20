@@ -1,23 +1,23 @@
 import React from 'react';
 
+import numeral from 'numeral';
+
 import {
   HStack,
   Box,
   Avatar,
-  // eslint-disable-next-line @typescript-eslint/no-redeclare
   Text,
   Spacer,
   useRadio,
   RadioProps,
 } from '@chakra-ui/react';
 
+import { FORMAT_NET_WORTH } from 'config/constants';
+
+import { CharacterValue } from 'domains/CharacterValue';
+
 interface CharacterProps {
-  character: {
-    avatar: string;
-    name: string;
-    source: string;
-    netWorth: string;
-  };
+  character: CharacterValue;
   radio: RadioProps;
 }
 
@@ -46,26 +46,39 @@ const Character = ({ character, radio }: CharacterProps): JSX.Element => {
         transition="all 0.2s"
         bgColor="gray.50"
         borderLeftColor="gray.300"
+        cursor="pointer"
+        opacity={0.5}
         _focus={{
           boxShadow: 'outline',
         }}
         _checked={{
+          opacity: 1,
           bg: 'green.50',
           borderLeftColor: 'green.300',
         }}
       >
         <Avatar size="sm" name={character.name} src={character.avatar} />
-        <Box>
-          <Text fontSize="md" fontWeight="bold" color={`${color}.800`}>
+        <Box overflow="hidden">
+          <Text
+            fontSize="md"
+            fontWeight="bold"
+            color={`${color}.800`}
+            isTruncated
+          >
             {character.name}
           </Text>
-          <Text fontSize="sm" color={`${color}.600`}>
+          <Text fontSize="sm" color={`${color}.600`} isTruncated>
             {character.source}
           </Text>
         </Box>
         <Spacer />
-        <Text fontSize="md" fontWeight="bold" color={`${color}.800`}>
-          {character.netWorth}
+        <Text
+          fontSize="md"
+          fontWeight="bold"
+          color={`${color}.800`}
+          textTransform="uppercase"
+        >
+          {numeral(character.netWorth).format(FORMAT_NET_WORTH)}
         </Text>
       </HStack>
     </Box>
