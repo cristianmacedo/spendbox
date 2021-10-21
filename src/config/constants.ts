@@ -1,4 +1,5 @@
 export const APP_NAME = 'SpendBox';
+export const FORMAT_PRICE = '$0,0';
 export const FORMAT_BALANCE = '$0,0';
 export const FORMAT_PERCENTAGE = '%0,0.00';
 export const FORMAT_NET_WORTH = '$ 0.0a';

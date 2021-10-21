@@ -1,6 +1,6 @@
 export interface CharacterValue {
   id: string;
-  avatar: string;
+  image: string;
   name: string;
   source: string;
   netWorth: number;

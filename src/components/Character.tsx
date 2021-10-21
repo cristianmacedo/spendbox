@@ -57,7 +57,7 @@ const Character = ({ character, radio }: CharacterProps): JSX.Element => {
           borderLeftColor: 'green.300',
         }}
       >
-        <Avatar size="sm" name={character.name} src={character.avatar} />
+        <Avatar size="sm" name={character.name} src={character.image} />
         <Box overflow="hidden">
           <Text
             fontSize="md"

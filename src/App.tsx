@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { ChakraProvider } from '@chakra-ui/react';
+import { ChakraProvider, SimpleGrid } from '@chakra-ui/react';
 
-import characters from 'config/mocks';
+import { STYLE_SPACING } from 'config/constants';
+import characters, { products } from 'config/mocks';
 import theme from 'config/theme';
 
 import { CharacterValue } from 'domains/CharacterValue';
@@ -11,6 +12,7 @@ import BalanceIndicator from 'components/BalanceIndicator';
 import CharacterPicker from 'components/CharacterPicker';
 import Header from 'components/Header';
 import Hero from 'components/Hero';
+import Product from 'components/Product';
 
 const App = (): JSX.Element => {
   const [selectedCharacter, setSelectedCharacter] =
@@ -44,6 +46,16 @@ const App = (): JSX.Element => {
         />
       </Hero>
       <BalanceIndicator start={startingBalance} end={currentBalance} />
+      <SimpleGrid columns={[1, 2, 4]} spacing={8} px={STYLE_SPACING} mt="32px">
+        {products.map((product) => (
+          <Product
+            key={product.id}
+            product={product}
+            onBuy={(id) => console.log(`Bought ${id}`)}
+            onSell={(id) => console.log(`Sold ${id}`)}
+          />
+        ))}
+      </SimpleGrid>
     </ChakraProvider>
   );
 };
