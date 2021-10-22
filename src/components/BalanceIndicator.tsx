@@ -34,6 +34,9 @@ const BalanceIndicator = ({
       py="8px"
       bgColor="orange.400"
       justify="center"
+      position="sticky"
+      top="0"
+      zIndex={1}
     >
       <Box>
         <Text
