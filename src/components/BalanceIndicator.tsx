@@ -25,7 +25,7 @@ const BalanceIndicator = ({
   const spent = start - end;
   const percentage = Number.isNaN(spent / start) ? 0 : spent / start;
   const previousPercentage = usePrevious<number>(percentage);
-  const previousStart = usePrevious<number>(start);
+  const previousEnd = usePrevious<number>(end);
 
   return (
     <HStack
@@ -51,10 +51,11 @@ const BalanceIndicator = ({
           lineHeight="none"
         >
           <CountUp
-            start={previousStart}
-            end={start}
+            start={previousEnd}
+            end={end}
             duration={2}
             formattingFn={(n: number) => numeral(n).format(FORMAT_BALANCE)}
+            decimals={2}
           />
         </Text>
       </Box>
@@ -83,7 +84,7 @@ const BalanceIndicator = ({
             end={percentage}
             duration={2}
             formattingFn={(n: number) => numeral(n).format(FORMAT_PERCENTAGE)}
-            decimals={4}
+            decimals={6}
           />
         </Text>
       </Box>

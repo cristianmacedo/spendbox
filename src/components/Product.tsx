@@ -21,17 +21,23 @@ import { ProductValue } from 'domains/ProductValue';
 
 interface ProductProps {
   product: ProductValue;
-  onBuy: (id: string) => void;
-  onSell: (id: string) => void;
+  onBuy: (id: string, count: number) => void;
+  onSell: (id: string, count: number) => void;
+  onChange: (id: string, count: number) => void;
 }
 
-const Product = ({ product, onBuy, onSell }: ProductProps): JSX.Element => (
+const Product = ({
+  product,
+  onBuy,
+  onSell,
+  onChange,
+}: ProductProps): JSX.Element => (
   <Flex
     bgColor="green.100"
     p="8px"
-    m="8px"
     borderRadius="md"
     direction="column"
+    w="100%"
   >
     <Flex justify="space-between" mb="4px">
       <Text
@@ -47,11 +53,11 @@ const Product = ({ product, onBuy, onSell }: ProductProps): JSX.Element => (
         {numeral(product.price).format(FORMAT_PRICE)}
       </Badge>
     </Flex>
-    <Text fontSize="xl" fontWeight="bold" color="green.700" mb="8px">
+    <Text fontSize="xl" fontWeight="bold" color="green.700">
       {product.name}
     </Text>
-    <Center w="100%" mb="8px">
-      <Image h="128px" src={product.image} alt={product.name} />
+    <Center w="100%" p="16px">
+      <Image h="80px" src={product.image} alt={product.name} />
     </Center>
     <HStack justify="space-between">
       <Button
@@ -64,16 +70,23 @@ const Product = ({ product, onBuy, onSell }: ProductProps): JSX.Element => (
         _active={{
           bgColor: 'white',
         }}
-        onClick={() => onSell(product.id)}
+        onClick={() => onSell(product.id, 1)}
       >
         Sell
       </Button>
-      <NumberInput size="sm" defaultValue={product.count}>
+      <NumberInput
+        size="sm"
+        w="100%"
+        onChange={(_, valueAsNumber) => onChange(product.id, valueAsNumber)}
+        value={product.count}
+        min={0}
+      >
         <NumberInputField
           bgColor="green.50"
           color="green.700"
           border="none"
           borderRadius="md"
+          pr="12px"
         />
       </NumberInput>
       <Button
@@ -85,7 +98,7 @@ const Product = ({ product, onBuy, onSell }: ProductProps): JSX.Element => (
         _active={{
           bgColor: 'green.900',
         }}
-        onClick={() => onBuy(product.id)}
+        onClick={() => onBuy(product.id, 1)}
       >
         Buy
       </Button>

@@ -3,10 +3,11 @@ import React from 'react';
 import { ChakraProvider, SimpleGrid } from '@chakra-ui/react';
 
 import { STYLE_SPACING } from 'config/constants';
-import characters, { products } from 'config/mocks';
+import characters, { products as productsMock } from 'config/mocks';
 import theme from 'config/theme';
 
 import { CharacterValue } from 'domains/CharacterValue';
+import { ProductValue } from 'domains/ProductValue';
 
 import BalanceIndicator from 'components/BalanceIndicator';
 import CharacterPicker from 'components/CharacterPicker';
@@ -17,16 +18,13 @@ import Product from 'components/Product';
 const App = (): JSX.Element => {
   const [selectedCharacter, setSelectedCharacter] =
     React.useState<CharacterValue>();
-  const [startingBalance, setStartingBalance] = React.useState<number>(0);
-  const [currentBalance, setCurrentBalance] = React.useState<number>(0);
+  const [products, setProducts] = React.useState<ProductValue[]>(productsMock);
 
-  const handleCharacterChange = React.useCallback(
-    (character: CharacterValue) => {
-      setSelectedCharacter(character);
-      setCurrentBalance(character.netWorth - 1_000_000_000);
-      setStartingBalance(character.netWorth);
-    },
-    []
+  const currentBalance = React.useMemo(
+    () =>
+      (selectedCharacter?.netWorth ?? 0) -
+      products.reduce((acc, p) => acc + p.price * p.count, 0),
+    [products, selectedCharacter]
   );
 
   const subtitle = React.useMemo((): string => {
@@ -35,6 +33,52 @@ const App = (): JSX.Element => {
     }
     return 'Pick a billionaire and spend it’s fortune however you want on the available products below!';
   }, [selectedCharacter]);
+
+  const handleCharacterChange = React.useCallback(
+    (character: CharacterValue) => {
+      setSelectedCharacter(character);
+    },
+    []
+  );
+
+  const handleChangeProduct = React.useCallback(
+    (id: string, count: number) => {
+      const newProducts = products.map((p) => {
+        if (p.id === id) {
+          return { ...p, count };
+        }
+        return p;
+      });
+      setProducts(newProducts);
+    },
+    [products]
+  );
+
+  const handleBuyProduct = React.useCallback(
+    (id: string, count: number) => {
+      const newProducts = products.map((p) => {
+        if (p.id === id) {
+          return { ...p, count: p.count + count };
+        }
+        return p;
+      });
+      setProducts(newProducts);
+    },
+    [products]
+  );
+
+  const handleSellProduct = React.useCallback(
+    (id: string, count: number) => {
+      const newProducts = products.map((p) => {
+        if (p.id === id) {
+          return { ...p, count: p.count - count };
+        }
+        return p;
+      });
+      setProducts(newProducts);
+    },
+    [products]
+  );
 
   return (
     <ChakraProvider theme={theme}>
@@ -45,14 +89,23 @@ const App = (): JSX.Element => {
           onCharacterChange={handleCharacterChange}
         />
       </Hero>
-      <BalanceIndicator start={startingBalance} end={currentBalance} />
-      <SimpleGrid columns={[1, 2, 4]} spacing={8} px={STYLE_SPACING} mt="32px">
+      <BalanceIndicator
+        start={selectedCharacter?.netWorth ?? 0}
+        end={currentBalance}
+      />
+      <SimpleGrid
+        columns={[1, 1, 2, 3, 4]}
+        spacing={8}
+        px={STYLE_SPACING}
+        my="32px"
+      >
         {products.map((product) => (
           <Product
             key={product.id}
             product={product}
-            onBuy={(id) => console.log(`Bought ${id}`)}
-            onSell={(id) => console.log(`Sold ${id}`)}
+            onBuy={handleBuyProduct}
+            onSell={handleSellProduct}
+            onChange={handleChangeProduct}
           />
         ))}
       </SimpleGrid>
