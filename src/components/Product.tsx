@@ -21,23 +21,17 @@ import { ProductValue } from 'domains/ProductValue';
 
 interface ProductProps {
   product: ProductValue;
-  onBuy: (id: string, count: number) => void;
-  onSell: (id: string, count: number) => void;
   onChange: (id: string, count: number) => void;
 }
 
-const Product = ({
-  product,
-  onBuy,
-  onSell,
-  onChange,
-}: ProductProps): JSX.Element => (
+const Product = ({ product, onChange }: ProductProps): JSX.Element => (
   <Flex
     bgColor="green.100"
     p="8px"
     borderRadius="md"
     direction="column"
     w="100%"
+    justify="space-between"
   >
     <Flex justify="space-between" mb="4px">
       <Text
@@ -70,7 +64,7 @@ const Product = ({
         _active={{
           bgColor: 'white',
         }}
-        onClick={() => onSell(product.id, 1)}
+        onClick={() => onChange(product.id, product.count - 1)}
       >
         Sell
       </Button>
@@ -98,7 +92,7 @@ const Product = ({
         _active={{
           bgColor: 'green.900',
         }}
-        onClick={() => onBuy(product.id, 1)}
+        onClick={() => onChange(product.id, product.count + 1)}
       >
         Buy
       </Button>

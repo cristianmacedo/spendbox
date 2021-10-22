@@ -45,33 +45,7 @@ const App = (): JSX.Element => {
     (id: string, count: number) => {
       const newProducts = products.map((p) => {
         if (p.id === id) {
-          return { ...p, count };
-        }
-        return p;
-      });
-      setProducts(newProducts);
-    },
-    [products]
-  );
-
-  const handleBuyProduct = React.useCallback(
-    (id: string, count: number) => {
-      const newProducts = products.map((p) => {
-        if (p.id === id) {
-          return { ...p, count: p.count + count };
-        }
-        return p;
-      });
-      setProducts(newProducts);
-    },
-    [products]
-  );
-
-  const handleSellProduct = React.useCallback(
-    (id: string, count: number) => {
-      const newProducts = products.map((p) => {
-        if (p.id === id) {
-          return { ...p, count: p.count - count };
+          return { ...p, count: Number.isNaN(count) ? 0 : count };
         }
         return p;
       });
@@ -103,8 +77,6 @@ const App = (): JSX.Element => {
           <Product
             key={product.id}
             product={product}
-            onBuy={handleBuyProduct}
-            onSell={handleSellProduct}
             onChange={handleChangeProduct}
           />
         ))}
