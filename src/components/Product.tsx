@@ -3,7 +3,7 @@ import React from 'react';
 import numeral from 'numeral';
 
 import {
-  // Box,
+  Stack,
   Flex,
   Text,
   Badge,
@@ -15,7 +15,7 @@ import {
   NumberInputField,
 } from '@chakra-ui/react';
 
-import { FORMAT_PRICE } from 'config/constants';
+import { FORMAT_CURRENCY } from 'config/constants';
 
 import { ProductValue } from 'domains/ProductValue';
 
@@ -25,15 +25,16 @@ interface ProductProps {
 }
 
 const Product = ({ product, onChange }: ProductProps): JSX.Element => (
-  <Flex
+  <Stack
     bgColor="green.100"
     p="8px"
     borderRadius="md"
     direction="column"
     w="100%"
     justify="space-between"
+    shadow="base"
   >
-    <Flex justify="space-between" mb="4px">
+    <Flex justify="space-between">
       <Text
         color="green.500"
         fontWeight="bold"
@@ -44,7 +45,7 @@ const Product = ({ product, onChange }: ProductProps): JSX.Element => (
         {product.type}
       </Text>
       <Badge borderRadius="md" px="2" bgColor="orange.500" color="orange.100">
-        {numeral(product.price).format(FORMAT_PRICE)}
+        {numeral(product.price).format(FORMAT_CURRENCY)}
       </Badge>
     </Flex>
     <Text fontSize="xl" fontWeight="bold" color="green.700">
@@ -53,7 +54,7 @@ const Product = ({ product, onChange }: ProductProps): JSX.Element => (
     <Center w="100%" p="16px">
       <Image h="80px" src={product.image} alt={product.name} />
     </Center>
-    <HStack justify="space-between">
+    <HStack>
       <Button
         color="green.700"
         variant="outline"
@@ -97,7 +98,7 @@ const Product = ({ product, onChange }: ProductProps): JSX.Element => (
         Buy
       </Button>
     </HStack>
-  </Flex>
+  </Stack>
 );
 
 export default Product;

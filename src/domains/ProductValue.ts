@@ -5,4 +5,5 @@ export interface ProductValue {
   type: string;
   price: number;
   count: number;
+  total: number;
 }

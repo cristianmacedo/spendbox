@@ -12,7 +12,7 @@ import {
   RadioProps,
 } from '@chakra-ui/react';
 
-import { FORMAT_NET_WORTH } from 'config/constants';
+import { FORMAT_CURRENCY_SYMBOLS } from 'config/constants';
 
 import { CharacterValue } from 'domains/CharacterValue';
 
@@ -78,7 +78,7 @@ const Character = ({ character, radio }: CharacterProps): JSX.Element => {
           color={`${color}.800`}
           textTransform="uppercase"
         >
-          {numeral(character.netWorth).format(FORMAT_NET_WORTH)}
+          {numeral(character.netWorth).format(FORMAT_CURRENCY_SYMBOLS)}
         </Text>
       </HStack>
     </Box>

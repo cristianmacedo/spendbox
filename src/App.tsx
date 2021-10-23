@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ChakraProvider, SimpleGrid } from '@chakra-ui/react';
+import { Grid, ChakraProvider, SimpleGrid } from '@chakra-ui/react';
 
 import { STYLE_SPACING } from 'config/constants';
 import characters, { products as productsMock } from 'config/mocks';
@@ -14,17 +14,26 @@ import CharacterPicker from 'components/CharacterPicker';
 import Header from 'components/Header';
 import Hero from 'components/Hero';
 import Product from 'components/Product';
+import Receipt from 'components/Receipt';
 
 const App = (): JSX.Element => {
   const [selectedCharacter, setSelectedCharacter] =
     React.useState<CharacterValue>();
   const [products, setProducts] = React.useState<ProductValue[]>(productsMock);
 
+  const spent = React.useMemo(
+    () => products.reduce((acc, p) => acc + p.price * p.count, 0),
+    [products]
+  );
+
+  const startingBalance = React.useMemo(
+    () => selectedCharacter?.netWorth ?? 0,
+    [selectedCharacter]
+  );
+
   const currentBalance = React.useMemo(
-    () =>
-      (selectedCharacter?.netWorth ?? 0) -
-      products.reduce((acc, p) => acc + p.price * p.count, 0),
-    [products, selectedCharacter]
+    () => startingBalance - spent,
+    [spent, startingBalance]
   );
 
   const subtitle = React.useMemo((): string => {
@@ -45,7 +54,11 @@ const App = (): JSX.Element => {
     (id: string, count: number) => {
       const newProducts = products.map((p) => {
         if (p.id === id) {
-          return { ...p, count: Number.isNaN(count) ? 0 : count };
+          return {
+            ...p,
+            count: Number.isNaN(count) ? 0 : count,
+            total: p.price * count,
+          };
         }
         return p;
       });
@@ -63,24 +76,29 @@ const App = (): JSX.Element => {
           onCharacterChange={handleCharacterChange}
         />
       </Hero>
-      <BalanceIndicator
-        start={selectedCharacter?.netWorth ?? 0}
-        end={currentBalance}
-      />
-      <SimpleGrid
-        columns={[1, 1, 2, 3, 4]}
-        spacing={8}
+      <BalanceIndicator start={startingBalance} end={currentBalance} />
+      <Grid
         px={STYLE_SPACING}
         my="32px"
+        templateColumns={['1fr', '1fr', '1fr', '1fr', '5fr 2fr']}
+        gap={5}
       >
-        {products.map((product) => (
-          <Product
-            key={product.id}
-            product={product}
-            onChange={handleChangeProduct}
-          />
-        ))}
-      </SimpleGrid>
+        <SimpleGrid columns={[1, 1, 2, 3, 4]} spacing={5}>
+          {products.map((product) => (
+            <Product
+              key={product.id}
+              product={product}
+              onChange={handleChangeProduct}
+            />
+          ))}
+        </SimpleGrid>
+        <Receipt
+          products={products}
+          balance={currentBalance}
+          spent={spent}
+          characterName={selectedCharacter?.name}
+        />
+      </Grid>
     </ChakraProvider>
   );
 };
