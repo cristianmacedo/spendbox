@@ -3,7 +3,10 @@ import React from 'react';
 import { Grid, ChakraProvider, SimpleGrid } from '@chakra-ui/react';
 
 import { STYLE_SPACING } from 'config/constants';
-import characters, { products as productsMock } from 'config/mocks';
+import {
+  characters as charactersMock,
+  products as productsMock,
+} from 'config/mocks';
 import theme from 'config/theme';
 
 import { CharacterValue } from 'domains/CharacterValue';
@@ -72,7 +75,7 @@ const App = (): JSX.Element => {
       <Header />
       <Hero title="Spend billionaires money!" subtitle={subtitle}>
         <CharacterPicker
-          characters={characters}
+          characters={charactersMock}
           onCharacterChange={handleCharacterChange}
         />
       </Hero>
