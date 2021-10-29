@@ -48,6 +48,7 @@ const BalanceIndicator = ({
           Your balance
         </Text>
         <Text
+          fontFamily="mono"
           fontSize="2xl"
           fontWeight="bold"
           color="orange.50"
@@ -58,7 +59,7 @@ const BalanceIndicator = ({
             end={end}
             duration={2}
             formattingFn={(n: number) => numeral(n).format(FORMAT_BALANCE)}
-            decimals={2}
+            decimals={5}
           />
         </Text>
       </Box>
@@ -77,6 +78,7 @@ const BalanceIndicator = ({
           Spent
         </Text>
         <Text
+          fontFamily="mono"
           fontSize="2xl"
           fontWeight="bold"
           color="orange.50"

@@ -71,6 +71,7 @@ const Receipt = ({
       p="16px"
       borderRadius="md"
       shadow="base"
+      fontFamily="mono"
     >
       <Stack py="8px" align="center" w="100%">
         <Heading as="h3" size="md">

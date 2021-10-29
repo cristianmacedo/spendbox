@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Stack, Text, useRadioGroup } from '@chakra-ui/react';
+import { Flex, Spinner, Stack, Text, useRadioGroup } from '@chakra-ui/react';
 
 import { CharacterValue } from 'domains/CharacterValue';
 
@@ -9,11 +9,13 @@ import Character from 'components/Character';
 interface CharacterPickerProps {
   characters: CharacterValue[];
   onCharacterChange: (character: CharacterValue) => void;
+  isLoading: boolean;
 }
 
 const CharacterPicker = ({
   characters,
   onCharacterChange,
+  isLoading,
 }: CharacterPickerProps): JSX.Element => {
   const { getRootProps, getRadioProps } = useRadioGroup({
     name: 'character-picker',
@@ -29,9 +31,12 @@ const CharacterPicker = ({
 
   return (
     <Stack {...group} maxW="424px" w="100%">
-      <Text fontSize="sm" fontWeight="bold" mb="4px" color="green.100">
-        Choose a character
-      </Text>
+      <Flex>
+        <Text fontSize="sm" fontWeight="bold" mb="4px" color="green.100">
+          Choose a character
+        </Text>
+        {isLoading && <Spinner size="sm" ml="8px" color="green.500" />}
+      </Flex>
       {characters.map((character) => {
         const radio = getRadioProps({
           value: character.id,

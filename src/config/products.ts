@@ -1,3 +1,5 @@
+import { ProductValue } from 'domains/ProductValue';
+
 import averageHouse from 'assets/average-house.png';
 import boeing from 'assets/boeing.png';
 import car from 'assets/car.png';
@@ -20,30 +22,6 @@ import rocket from 'assets/rocket.png';
 import sportsCar from 'assets/sports-car.png';
 import streaming from 'assets/streaming.png';
 import tickets from 'assets/tickets.png';
-
-import { CharacterValue } from 'domains/CharacterValue';
-import { ProductValue } from 'domains/ProductValue';
-
-export const characters: CharacterValue[] = [
-  {
-    id: 'faris/35/0/14117',
-    name: 'Elon Musk',
-    image:
-      // eslint-disable-next-line no-secrets/no-secrets
-      'https://specials-images.forbesimg.com/imageserve/5f47d4de7637290765bce495/416x416.jpg',
-    source: 'Tesla, SpaceX',
-    netWorth: 214_840_733_200,
-  },
-  {
-    id: 'faris/35/0/6713',
-    name: 'Jeff Besos',
-    image:
-      // eslint-disable-next-line no-secrets/no-secrets
-      'https://specials-images.forbesimg.com/imageserve/5bb22ae84bbe6f67d2e82e05/416x416.jpg',
-    source: 'Amazon',
-    netWorth: 197_817_067_000,
-  },
-];
 
 export const products: ProductValue[] = [
   {
@@ -144,7 +122,7 @@ export const products: ProductValue[] = [
   },
   {
     type: 'Franchise Unit',
-    name: "McDonald's",
+    name: "McDonald's Franchise",
     image: mcdonalds,
     price: 1_500_000,
   },
@@ -186,3 +164,5 @@ export const products: ProductValue[] = [
   count: 0,
   total: 0,
 }));
+
+export default {};

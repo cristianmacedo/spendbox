@@ -20,7 +20,9 @@
           "/^domains/",
           "/^utils/",
           "/^hooks/",
+          "/^assets/",
           "/^components/",
+          "/^pages/",
           ["parent", "sibling", "index"]
         ],
         "alphabetize": { "order": "asc", "ignoreCase": true }
