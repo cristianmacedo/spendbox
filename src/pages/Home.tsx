@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Grid, SimpleGrid } from '@chakra-ui/react';
+import { Center, Grid, SimpleGrid, Text } from '@chakra-ui/react';
 
 import { STYLE_SPACING } from 'config/constants';
 import { products as productList } from 'config/products';
@@ -97,6 +97,23 @@ const Home = (): JSX.Element => {
               onChange={handleChangeProduct}
             />
           ))}
+          <Center>
+            <Text
+              color="green.500"
+              fontWeight="bold"
+              letterSpacing="wide"
+              fontSize="xs"
+            >
+              Icons made by{' '}
+              <a href="https://www.freepik.com" title="Freepik">
+                Freepik
+              </a>{' '}
+              from{' '}
+              <a href="https://www.flaticon.com/" title="Flaticon">
+                www.flaticon.com
+              </a>
+            </Text>
+          </Center>
         </SimpleGrid>
         <Receipt
           products={products}
