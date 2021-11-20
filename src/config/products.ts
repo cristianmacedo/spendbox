@@ -141,7 +141,7 @@ export const products: ProductValue[] = [
   },
   {
     type: 'Trip to Orbit',
-    name: 'Spacex Insipiration 4 Ticket',
+    name: 'SpaceX Insipiration 4 Ticket',
     image: rocket,
     price: 50_000_000,
   },
