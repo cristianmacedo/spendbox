@@ -2,23 +2,30 @@ import { ProductValue } from 'domains/ProductValue';
 
 import averageHouse from 'assets/average-house.png';
 import boeing from 'assets/boeing.png';
+import burjKhalifa from 'assets/burj-khalifa.png';
 import car from 'assets/car.png';
 import coffee from 'assets/coffee.png';
 import computer from 'assets/computer.png';
+import cruise from 'assets/cruise.png';
 import electricCar from 'assets/electric-car.png';
 import falcon from 'assets/falcon.png';
 import graphicsCard from 'assets/graphics-card.png';
 import hamburger from 'assets/hamburger.png';
 import helicopter from 'assets/helicopter.png';
+import homeless from 'assets/homeless.png';
+import hunger from 'assets/hunger.png';
 import iphone from 'assets/iphone.png';
 import jet from 'assets/jet.png';
 import macbook from 'assets/macbook.png';
+import mars from 'assets/mars.png';
 import mcdonalds from 'assets/mcdonalds.png';
 import meal from 'assets/meal.png';
 import oil from 'assets/oil.png';
+import packages from 'assets/packages.png';
 import piano from 'assets/piano.png';
 import playstation from 'assets/playstation.png';
 import rocket from 'assets/rocket.png';
+import spaceStation from 'assets/space-station.png';
 import sportsCar from 'assets/sports-car.png';
 import streaming from 'assets/streaming.png';
 import tickets from 'assets/tickets.png';
@@ -155,6 +162,48 @@ export const products: ProductValue[] = [
     name: 'Petronius Oil Rig',
     image: oil,
     price: 550_000_000,
+  },
+  {
+    type: 'Cruise Ship',
+    name: 'Costa Esmeralda',
+    image: cruise,
+    price: 950_000_000,
+  },
+  {
+    type: 'Highest Building',
+    name: 'Burj Khalifa',
+    image: burjKhalifa,
+    price: 1_500_000_000,
+  },
+  {
+    type: 'Trip',
+    name: 'SpaceX Trip to Mars',
+    image: mars,
+    price: 3_000_000_000,
+  },
+  {
+    type: 'Misc',
+    name: 'Everything on Amazon',
+    image: packages,
+    price: 12_860_000_000,
+  },
+  {
+    type: 'Philanthropy',
+    name: 'End Homelessness in the US',
+    image: homeless,
+    price: 20_000_000_000,
+  },
+  {
+    type: 'Philanthropy',
+    name: 'End World Hunger',
+    image: hunger,
+    price: 135_000_000_000,
+  },
+  {
+    type: 'Space Station',
+    name: 'International Space Station',
+    image: spaceStation,
+    price: 150_000_000_000,
   },
 ].map((product) => ({
   ...product,
