@@ -56,6 +56,7 @@ const Home = (): JSX.Element => {
 
   const handleChangeProduct = React.useCallback(
     (id: string, count: number) => {
+      if (count < 0) return;
       const newProducts = products.map((p) => {
         if (p.id === id) {
           return {
