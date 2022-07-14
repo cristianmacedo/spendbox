@@ -12,3 +12,5 @@ export const STYLE_SPACING = [
   STYLE_SPACING_BASE,
   STYLE_SPACING_LG,
 ];
+export const CHARACTER_LIMIT = 4;
+export const ANIMATION_DELAY_MULTIPLIER = 0.05;

@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { Center, Grid, SimpleGrid, Text } from '@chakra-ui/react';
+import { Center, Grid, ScaleFade, SimpleGrid, Text } from '@chakra-ui/react';
 
-import { STYLE_SPACING } from 'config/constants';
+import { ANIMATION_DELAY_MULTIPLIER, STYLE_SPACING } from 'config/constants';
 import { products as productList } from 'config/products';
 
 import { CharacterValue } from 'domains/CharacterValue';
@@ -90,12 +90,18 @@ const Home = (): JSX.Element => {
         gap={5}
       >
         <SimpleGrid columns={[1, 1, 2, 3, 4]} spacing={5}>
-          {products.map((product) => (
-            <Product
+          {products.map((product, index) => (
+            <ScaleFade
+              in
+              delay={ANIMATION_DELAY_MULTIPLIER * index}
               key={product.id}
-              product={product}
-              onChange={handleChangeProduct}
-            />
+            >
+              <Product
+                key={product.id}
+                product={product}
+                onChange={handleChangeProduct}
+              />
+            </ScaleFade>
           ))}
           <Center>
             <Text
