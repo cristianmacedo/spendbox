@@ -8,7 +8,7 @@ import { FORMAT_CURRENCY_SYMBOLS, FORMAT_NUMBER } from 'config/constants';
 
 import { ProductValue } from 'domains/ProductValue';
 
-import id from 'utils/common';
+import { id } from 'utils/generators';
 
 interface ReceiptProps {
   products: ProductValue[];

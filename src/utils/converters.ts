@@ -13,5 +13,3 @@ export const convertPersonToCharacter = ({
   source,
   netWorth: finalWorth * 1000 * 1000,
 });
-
-export default convertPersonToCharacter;
