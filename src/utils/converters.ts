@@ -6,10 +6,12 @@ export const convertPersonToCharacter = ({
   person: { name, squareImage },
   source,
   finalWorth,
+  bios,
 }: PersonValue): CharacterValue => ({
   id: naturalId,
   image: squareImage,
   name,
   source,
   netWorth: finalWorth * 1000 * 1000,
+  bios,
 });

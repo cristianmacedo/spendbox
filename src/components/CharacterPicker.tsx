@@ -2,6 +2,7 @@ import React from 'react';
 
 import {
   Flex,
+  ScaleFade,
   Skeleton,
   Spinner,
   Stack,
@@ -9,7 +10,7 @@ import {
   useRadioGroup,
 } from '@chakra-ui/react';
 
-import { CHARACTER_LIMIT } from 'config/constants';
+import { ANIMATION_DELAY_MULTIPLIER, CHARACTER_LIMIT } from 'config/constants';
 
 import { CharacterValue } from 'domains/CharacterValue';
 
@@ -20,6 +21,19 @@ interface CharacterPickerProps {
   onCharacterChange: (character: CharacterValue) => void;
   isLoading: boolean;
 }
+
+const characterPickerSkeleton = Array.from(
+  { length: CHARACTER_LIMIT },
+  (_, index) => (
+    <Skeleton
+      key={index}
+      h="56px"
+      borderRadius="md"
+      startColor="green.100"
+      endColor="green.900"
+    />
+  )
+);
 
 const CharacterPicker = ({
   characters,
@@ -38,29 +52,17 @@ const CharacterPicker = ({
 
   const group = getRootProps();
 
-  const charactersContent = React.useMemo(() => {
-    if (isLoading) {
-      return Array.from({ length: CHARACTER_LIMIT }, (_, index) => (
-        <Skeleton
-          key={index}
-          h="56px"
-          borderRadius="md"
-          startColor="green.100"
-          endColor="green.900"
-        />
-      ));
-    }
-
-    return characters.map((character) => {
-      const radio = getRadioProps({
-        value: character.id,
-        enterKeyHint: 'none',
-      });
-      return (
-        <Character key={character.id} character={character} radio={radio} />
-      );
-    });
-  }, [characters, getRadioProps, isLoading]);
+  const charactersMap = characters.map((character, index) => (
+    <ScaleFade key={character.id} delay={ANIMATION_DELAY_MULTIPLIER * index} in>
+      <Character
+        character={character}
+        radio={getRadioProps({
+          value: character.id,
+          enterKeyHint: 'none',
+        })}
+      />
+    </ScaleFade>
+  ));
 
   return (
     <Stack {...group} maxW="424px" w="100%">
@@ -70,7 +72,7 @@ const CharacterPicker = ({
         </Text>
         {isLoading && <Spinner size="sm" ml="8px" color="green.500" />}
       </Flex>
-      {charactersContent}
+      {isLoading ? characterPickerSkeleton : charactersMap}
     </Stack>
   );
 };

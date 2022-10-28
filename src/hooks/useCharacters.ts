@@ -14,11 +14,13 @@ const getCharacters = async (): Promise<CharacterValue[]> => {
   const { data } = await axios.get<PersonValue[]>(
     `${FORBES_RTB_400}?limit=${CHARACTER_LIMIT}`
   );
+
   return data.map((element) => convertPersonToCharacter(element));
 };
 
-const useCharacters = (): UseQueryResult<CharacterValue[]> =>
+const useCharacters = (): UseQueryResult<CharacterValue[], Error> =>
   useQuery<CharacterValue[], Error>(QueryType.CHARACTERS, getCharacters, {
+    placeholderData: [],
     staleTime: 60 * 1000,
   });
 

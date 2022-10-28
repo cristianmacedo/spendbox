@@ -4,4 +4,5 @@ export interface CharacterValue {
   name: string;
   source: string;
   netWorth: number;
+  bios: string[];
 }

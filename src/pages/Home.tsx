@@ -1,6 +1,13 @@
 import React from 'react';
 
-import { Center, Grid, ScaleFade, SimpleGrid, Text } from '@chakra-ui/react';
+import {
+  Center,
+  Grid,
+  ScaleFade,
+  SimpleGrid,
+  SlideFade,
+  Text,
+} from '@chakra-ui/react';
 
 import { ANIMATION_DELAY_MULTIPLIER, STYLE_SPACING } from 'config/constants';
 import { products as productList } from 'config/products';
@@ -24,6 +31,7 @@ const Home = (): JSX.Element => {
   const [selectedCharacter, setSelectedCharacter] =
     React.useState<CharacterValue>();
   const [products, setProducts] = React.useState<ProductValue[]>(productList);
+  const [isQuoteOpen, setQuoteOpen] = React.useState<boolean>(false);
 
   const spent = React.useMemo(
     () => products.reduce((acc, p) => acc + p.price * p.count, 0),
@@ -49,7 +57,12 @@ const Home = (): JSX.Element => {
 
   const handleCharacterChange = React.useCallback(
     (character: CharacterValue) => {
+      setQuoteOpen(false);
       setSelectedCharacter(character);
+
+      setTimeout(() => {
+        setQuoteOpen(true);
+      }, 2000);
     },
     []
   );
@@ -76,6 +89,20 @@ const Home = (): JSX.Element => {
     <>
       <Header />
       <Hero title="Spend billionaires money!" subtitle={subtitle}>
+        {/* eslint-disable-next-line @typescript-eslint/no-unsafe-member-access */}
+        {selectedCharacter && (
+          <SlideFade in={isQuoteOpen}>
+            <Text
+              fontSize={14}
+              fontWeight="medium"
+              fontStyle="italic"
+              color="green.200"
+              w="256px"
+            >
+              &quot;{selectedCharacter.bios[0]}&quot;
+            </Text>
+          </SlideFade>
+        )}
         <CharacterPicker
           isLoading={isFetchingCharacters}
           characters={characters || []}
