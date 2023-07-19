@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 
-import numeral from 'numeral';
+import numeral from "numeral";
 
 import {
   Stack,
@@ -13,11 +13,11 @@ import {
   HStack,
   NumberInput,
   NumberInputField,
-} from '@chakra-ui/react';
+} from "@chakra-ui/react";
 
-import { FORMAT_CURRENCY } from 'config/constants';
+import { FORMAT_CURRENCY } from "config/constants";
 
-import { ProductValue } from 'domains/ProductValue';
+import { ProductValue } from "domains/ProductValue";
 
 interface ProductProps {
   product: ProductValue;
@@ -61,9 +61,9 @@ const Product = ({ product, onChange }: ProductProps): JSX.Element => (
         borderColor="green.700"
         size="sm"
         minW="50px"
-        _hover={{ bgColor: 'green.50' }}
+        _hover={{ bgColor: "green.50" }}
         _active={{
-          bgColor: 'white',
+          bgColor: "white",
         }}
         onClick={() => onChange(product.id, product.count - 1)}
       >
@@ -89,9 +89,9 @@ const Product = ({ product, onChange }: ProductProps): JSX.Element => (
         color="green.50"
         size="sm"
         minW="50px"
-        _hover={{ bgColor: 'green.800' }}
+        _hover={{ bgColor: "green.800" }}
         _active={{
-          bgColor: 'green.900',
+          bgColor: "green.900",
         }}
         onClick={() => onChange(product.id, product.count + 1)}
       >

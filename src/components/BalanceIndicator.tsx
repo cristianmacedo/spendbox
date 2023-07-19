@@ -1,17 +1,17 @@
-import React from 'react';
+import React from "react";
 
-import numeral from 'numeral';
-import CountUp from 'react-countup';
+import numeral from "numeral";
+import CountUp from "react-countup";
 
-import { HStack, Text, Divider, Box } from '@chakra-ui/react';
+import { HStack, Text, Divider, Box } from "@chakra-ui/react";
 
 import {
   FORMAT_BALANCE,
   FORMAT_PERCENTAGE,
   STYLE_SPACING,
-} from 'config/constants';
+} from "config/constants";
 
-import usePrevious from 'hooks/usePrevious';
+import usePrevious from "hooks/usePrevious";
 
 interface BalanceIndicatorProps {
   start: number;

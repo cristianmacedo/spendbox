@@ -1,14 +1,14 @@
-import React from 'react';
+import React from "react";
 
-import numeral from 'numeral';
+import numeral from "numeral";
 
-import { Stack, Heading, Text, Flex, Box, Divider } from '@chakra-ui/react';
+import { Stack, Heading, Text, Flex, Box, Divider } from "@chakra-ui/react";
 
-import { FORMAT_CURRENCY_SYMBOLS, FORMAT_NUMBER } from 'config/constants';
+import { FORMAT_CURRENCY_SYMBOLS, FORMAT_NUMBER } from "config/constants";
 
-import { ProductValue } from 'domains/ProductValue';
+import { ProductValue } from "domains/ProductValue";
 
-import { id } from 'utils/generators';
+import { id } from "utils/generators";
 
 interface ReceiptProps {
   products: ProductValue[];
@@ -17,10 +17,10 @@ interface ReceiptProps {
   characterName?: string;
 }
 
-const FIRST_COLUMN_WIDTH = '22.5%';
-const SECOND_COLUMN_WIDTH = '2.5%';
-const THIRD_COLUMN_WIDTH = '50%';
-const FOURTH_COLUMN_WIDTH = '25%';
+const FIRST_COLUMN_WIDTH = "22.5%";
+const SECOND_COLUMN_WIDTH = "2.5%";
+const THIRD_COLUMN_WIDTH = "50%";
+const FOURTH_COLUMN_WIDTH = "25%";
 
 const renderTable = (products: ProductValue[]): JSX.Element => (
   <Stack textTransform="uppercase" fontSize="xs">

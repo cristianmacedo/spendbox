@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 import {
   Flex,
@@ -8,13 +8,13 @@ import {
   Stack,
   Text,
   useRadioGroup,
-} from '@chakra-ui/react';
+} from "@chakra-ui/react";
 
-import { ANIMATION_DELAY_MULTIPLIER, CHARACTER_LIMIT } from 'config/constants';
+import { ANIMATION_DELAY_MULTIPLIER, CHARACTER_LIMIT } from "config/constants";
 
-import { CharacterValue } from 'domains/CharacterValue';
+import { CharacterValue } from "domains/CharacterValue";
 
-import Character from 'components/Character';
+import Character from "components/Character";
 
 interface CharacterPickerProps {
   characters: CharacterValue[];
@@ -41,7 +41,7 @@ const CharacterPicker = ({
   isLoading,
 }: CharacterPickerProps): JSX.Element => {
   const { getRootProps, getRadioProps } = useRadioGroup({
-    name: 'character-picker',
+    name: "character-picker",
     onChange: (id: string) => {
       const character = characters.find((c) => c.id === id);
       if (character) {
@@ -58,7 +58,7 @@ const CharacterPicker = ({
         character={character}
         radio={getRadioProps({
           value: character.id,
-          enterKeyHint: 'none',
+          enterKeyHint: "none",
         })}
       />
     </ScaleFade>

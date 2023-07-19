@@ -1,10 +1,10 @@
-import React from 'react';
+import React from "react";
 
-import { FaGithub } from 'react-icons/fa';
+import { FaGithub } from "react-icons/fa";
 
-import { Flex, Text, Link } from '@chakra-ui/react';
+import { Flex, Text, Link } from "@chakra-ui/react";
 
-import { APP_NAME, STYLE_SPACING } from 'config/constants';
+import { APP_NAME, STYLE_SPACING } from "config/constants";
 
 const Header = (): JSX.Element => (
   <Flex

@@ -36,7 +36,7 @@ export interface PersonValue {
   naturalId: string;
   position: number;
   imageExists: true;
-  gender: 'M' | 'F';
+  gender: "M" | "F";
   birthDate: number;
   lastName: string;
   financialAssets: FinancialAssetValue[];

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 import {
   Center,
@@ -7,22 +7,22 @@ import {
   SimpleGrid,
   SlideFade,
   Text,
-} from '@chakra-ui/react';
+} from "@chakra-ui/react";
 
-import { ANIMATION_DELAY_MULTIPLIER, STYLE_SPACING } from 'config/constants';
-import { products as productList } from 'config/products';
+import { ANIMATION_DELAY_MULTIPLIER, STYLE_SPACING } from "config/constants";
+import { products as productList } from "config/products";
 
-import { CharacterValue } from 'domains/CharacterValue';
-import { ProductValue } from 'domains/ProductValue';
+import { CharacterValue } from "domains/CharacterValue";
+import { ProductValue } from "domains/ProductValue";
 
-import useCharacters from 'hooks/useCharacters';
+import useCharacters from "hooks/useCharacters";
 
-import BalanceIndicator from 'components/BalanceIndicator';
-import CharacterPicker from 'components/CharacterPicker';
-import Header from 'components/Header';
-import Hero from 'components/Hero';
-import Product from 'components/Product';
-import Receipt from 'components/Receipt';
+import BalanceIndicator from "components/BalanceIndicator";
+import CharacterPicker from "components/CharacterPicker";
+import Header from "components/Header";
+import Hero from "components/Hero";
+import Product from "components/Product";
+import Receipt from "components/Receipt";
 
 const Home = (): JSX.Element => {
   const { data: characters, isFetching: isFetchingCharacters } =
@@ -52,7 +52,7 @@ const Home = (): JSX.Element => {
     if (selectedCharacter) {
       return `Spend ${selectedCharacter.name}'s fortune however you want on the available products below!`;
     }
-    return 'Pick a billionaire and spend it’s fortune however you want on the available products below!';
+    return "Pick a billionaire and spend it’s fortune however you want on the available products below!";
   }, [selectedCharacter]);
 
   const handleCharacterChange = React.useCallback(
@@ -113,7 +113,7 @@ const Home = (): JSX.Element => {
       <Grid
         px={STYLE_SPACING}
         my="32px"
-        templateColumns={['1fr', '1fr', '1fr', '1fr', '5fr 2fr']}
+        templateColumns={["1fr", "1fr", "1fr", "1fr", "5fr 2fr"]}
         gap={5}
       >
         <SimpleGrid columns={[1, 1, 2, 3, 4]} spacing={5}>
@@ -137,11 +137,11 @@ const Home = (): JSX.Element => {
               letterSpacing="wide"
               fontSize="xs"
             >
-              Icons made by{' '}
+              Icons made by{" "}
               <a href="https://www.freepik.com" title="Freepik">
                 Freepik
-              </a>{' '}
-              from{' '}
+              </a>{" "}
+              from{" "}
               <a href="https://www.flaticon.com/" title="Flaticon">
                 www.flaticon.com
               </a>

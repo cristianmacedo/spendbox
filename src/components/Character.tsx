@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 
-import numeral from 'numeral';
+import numeral from "numeral";
 
 import {
   HStack,
@@ -10,11 +10,11 @@ import {
   Spacer,
   useRadio,
   RadioProps,
-} from '@chakra-ui/react';
+} from "@chakra-ui/react";
 
-import { FORMAT_CURRENCY_SYMBOLS } from 'config/constants';
+import { FORMAT_CURRENCY_SYMBOLS } from "config/constants";
 
-import { CharacterValue } from 'domains/CharacterValue';
+import { CharacterValue } from "domains/CharacterValue";
 
 interface CharacterProps {
   character: CharacterValue;
@@ -31,7 +31,7 @@ const Character = ({ character, radio }: CharacterProps): JSX.Element => {
   const input = getInputProps();
   const checkbox = getCheckboxProps();
 
-  const color = isChecked ? 'green' : 'gray';
+  const color = isChecked ? "green" : "gray";
 
   return (
     <Box as="label">
@@ -49,12 +49,12 @@ const Character = ({ character, radio }: CharacterProps): JSX.Element => {
         cursor="pointer"
         opacity={0.5}
         _focus={{
-          boxShadow: 'outline',
+          boxShadow: "outline",
         }}
         _checked={{
           opacity: 1,
-          bg: 'green.50',
-          borderLeftColor: 'green.300',
+          bg: "green.50",
+          borderLeftColor: "green.300",
         }}
       >
         <Avatar size="sm" name={character.name} src={character.image} />

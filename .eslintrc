@@ -2,6 +2,7 @@
   "extends": "auto",
   "plugins": ["import-helpers"],
   "rules": {
+    "prettier/prettier": ["error"],
     "@typescript-eslint/no-redeclare": [
       "error",
       {

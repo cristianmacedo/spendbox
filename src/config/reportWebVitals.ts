@@ -5,7 +5,7 @@ import {
   getFCP,
   getLCP,
   getTTFB,
-} from 'web-vitals';
+} from "web-vitals";
 
 const reportWebVitals = (onPerfEntry?: ReportHandler): void => {
   if (onPerfEntry && onPerfEntry instanceof Function) {

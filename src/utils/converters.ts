@@ -1,5 +1,5 @@
-import { PersonValue } from 'domains/ApiValue';
-import { CharacterValue } from 'domains/CharacterValue';
+import { PersonValue } from "domains/ApiValue";
+import { CharacterValue } from "domains/CharacterValue";
 
 export const convertPersonToCharacter = ({
   naturalId,
