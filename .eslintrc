@@ -1,6 +1,6 @@
 {
-  "extends": "auto",
-  "plugins": ["import-helpers"],
+  "extends": ["auto"],
+  "plugins": ["import-helpers", "prettier"],
   "rules": {
     "prettier/prettier": ["error"],
     "@typescript-eslint/no-redeclare": [
