@@ -1,9 +1,14 @@
-"use client";
-
 import { Inter } from "next/font/google";
 import Providers from "./providers";
+import { Metadata } from "next";
 
 const inter = Inter({ subsets: ["latin"] });
+
+export const metadata: Metadata = {
+  title: "SpendBox",
+  description:
+    "A game app to spend billionaires money and visualize money with common products",
+};
 
 export default function RootLayout({
   children,

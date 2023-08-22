@@ -1,3 +1,5 @@
+"use client";
+
 import theme from "@/config/theme";
 import { ChakraProvider } from "@chakra-ui/react";
 import { QueryClient, QueryClientProvider } from "react-query";
