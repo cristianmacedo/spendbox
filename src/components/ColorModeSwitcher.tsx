@@ -1,5 +1,3 @@
-import React from "react";
-
 import { FaMoon, FaSun } from "react-icons/fa";
 
 import {

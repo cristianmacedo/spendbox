@@ -1,73 +1,80 @@
-import React from "react";
+"use client";
 
+import BalanceIndicator from "@/components/BalanceIndicator";
+import CharacterPicker from "@/components/CharacterPicker";
+import Header from "@/components/Header";
+import Hero from "@/components/Hero";
+import Product from "@/components/Product";
+import Receipt from "@/components/Receipt";
+import { STYLE_SPACING, ANIMATION_DELAY_MULTIPLIER } from "@/config/constants";
+import { useCharacters } from "@/hooks/useCharacters";
+import { Character } from "@/types/Character";
+import { Product as ProductType } from "@/types/Product";
+import { products as defaultProducts } from "@/config/products";
 import {
-  Center,
-  Grid,
-  ScaleFade,
-  SimpleGrid,
   SlideFade,
+  Grid,
+  SimpleGrid,
+  ScaleFade,
+  Center,
   Text,
 } from "@chakra-ui/react";
+import { useState, useMemo, useCallback } from "react";
+import { GetStaticProps, InferGetStaticPropsType } from "next";
+import { id } from "@/utils/generators";
 
-import { ANIMATION_DELAY_MULTIPLIER, STYLE_SPACING } from "config/constants";
-import { products as productList } from "config/products";
+export const getInitialProps: GetStaticProps<{
+  date: string;
+  receiptId: string;
+}> = () => {
+  const date = new Date().toLocaleDateString();
+  const receiptId = id(6);
+  return { props: { date, receiptId } };
+};
 
-import { CharacterValue } from "domains/CharacterValue";
-import { ProductValue } from "domains/ProductValue";
-
-import useCharacters from "hooks/useCharacters";
-
-import BalanceIndicator from "components/BalanceIndicator";
-import CharacterPicker from "components/CharacterPicker";
-import Header from "components/Header";
-import Hero from "components/Hero";
-import Product from "components/Product";
-import Receipt from "components/Receipt";
-
-const Home = (): JSX.Element => {
+export default function Home({
+  date,
+  receiptId,
+}: InferGetStaticPropsType<typeof getInitialProps>) {
   const { data: characters, isFetching: isFetchingCharacters } =
     useCharacters();
 
-  const [selectedCharacter, setSelectedCharacter] =
-    React.useState<CharacterValue>();
-  const [products, setProducts] = React.useState<ProductValue[]>(productList);
-  const [isQuoteOpen, setQuoteOpen] = React.useState<boolean>(false);
+  const [selectedCharacter, setSelectedCharacter] = useState<Character>();
+  const [products, setProducts] = useState<ProductType[]>(defaultProducts);
+  const [isQuoteOpen, setQuoteOpen] = useState<boolean>(false);
 
-  const spent = React.useMemo(
+  const spent = useMemo(
     () => products.reduce((acc, p) => acc + p.price * p.count, 0),
     [products]
   );
 
-  const startingBalance = React.useMemo(
+  const startingBalance = useMemo(
     () => selectedCharacter?.netWorth ?? 0,
     [selectedCharacter]
   );
 
-  const currentBalance = React.useMemo(
+  const currentBalance = useMemo(
     () => startingBalance - spent,
     [spent, startingBalance]
   );
 
-  const subtitle = React.useMemo((): string => {
+  const subtitle = useMemo((): string => {
     if (selectedCharacter) {
       return `Spend ${selectedCharacter.name}'s fortune however you want on the available products below!`;
     }
     return "Pick a billionaire and spend it’s fortune however you want on the available products below!";
   }, [selectedCharacter]);
 
-  const handleCharacterChange = React.useCallback(
-    (character: CharacterValue) => {
-      setQuoteOpen(false);
-      setSelectedCharacter(character);
+  const handleCharacterChange = useCallback((character: Character) => {
+    setQuoteOpen(false);
+    setSelectedCharacter(character);
 
-      setTimeout(() => {
-        setQuoteOpen(true);
-      }, 2000);
-    },
-    []
-  );
+    setTimeout(() => {
+      setQuoteOpen(true);
+    }, 2000);
+  }, []);
 
-  const handleChangeProduct = React.useCallback(
+  const handleChangeProduct = useCallback(
     (id: string, count: number) => {
       if (count < 0) return;
       const newProducts = products.map((p) => {
@@ -89,7 +96,6 @@ const Home = (): JSX.Element => {
     <>
       <Header />
       <Hero title="Spend billionaires money!" subtitle={subtitle}>
-        {/* eslint-disable-next-line @typescript-eslint/no-unsafe-member-access */}
         {selectedCharacter && (
           <SlideFade in={isQuoteOpen}>
             <Text
@@ -149,6 +155,8 @@ const Home = (): JSX.Element => {
           </Center>
         </SimpleGrid>
         <Receipt
+          id={receiptId}
+          date={date}
           products={products}
           balance={currentBalance}
           spent={spent}
@@ -157,6 +165,4 @@ const Home = (): JSX.Element => {
       </Grid>
     </>
   );
-};
-
-export default Home;
+}

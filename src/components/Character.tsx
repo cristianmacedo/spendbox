@@ -1,5 +1,3 @@
-import React from "react";
-
 import numeral from "numeral";
 
 import {
@@ -12,12 +10,12 @@ import {
   RadioProps,
 } from "@chakra-ui/react";
 
-import { FORMAT_CURRENCY_SYMBOLS } from "config/constants";
+import { FORMAT_CURRENCY_SYMBOLS } from "@/config/constants";
 
-import { CharacterValue } from "domains/CharacterValue";
+import { Character as CharacterType } from "@/types/Character";
 
 interface CharacterProps {
-  character: CharacterValue;
+  character: CharacterType;
   radio: RadioProps;
 }
 

@@ -1,16 +1,6 @@
-export interface FinancialAssetValue {
-  exchange: string;
-  ticker: string;
-  companyName: string;
-  numberOfShares: number;
-  sharePrice: number;
-  currencyCode: string;
-  exchangeRate: number;
-  interactive: true;
-  currentPrice: number;
-}
+import { FinancialAsset } from "./FinancialAsset";
 
-export interface PersonValue {
+export interface Person {
   name: string;
   year: number;
   uri: string;
@@ -39,7 +29,7 @@ export interface PersonValue {
   gender: "M" | "F";
   birthDate: number;
   lastName: string;
-  financialAssets: FinancialAssetValue[];
+  financialAssets: FinancialAsset[];
   date: number;
   wealthList: false;
   estWorthPrev: number;

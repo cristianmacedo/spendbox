@@ -1,5 +1,3 @@
-import React from "react";
-
 import {
   Flex,
   ScaleFade,
@@ -10,15 +8,18 @@ import {
   useRadioGroup,
 } from "@chakra-ui/react";
 
-import { ANIMATION_DELAY_MULTIPLIER, CHARACTER_LIMIT } from "config/constants";
+import {
+  ANIMATION_DELAY_MULTIPLIER,
+  CHARACTER_LIMIT,
+} from "@/config/constants";
 
-import { CharacterValue } from "domains/CharacterValue";
+import { Character as CharacterType } from "@/types/Character";
 
-import Character from "components/Character";
+import Character from "@/components/Character";
 
 interface CharacterPickerProps {
-  characters: CharacterValue[];
-  onCharacterChange: (character: CharacterValue) => void;
+  characters: CharacterType[];
+  onCharacterChange: (character: CharacterType) => void;
   isLoading: boolean;
 }
 

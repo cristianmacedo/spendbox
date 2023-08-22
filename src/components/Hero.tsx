@@ -1,8 +1,6 @@
-import React from "react";
-
 import { Stack, Text, Heading, Box } from "@chakra-ui/react";
 
-import { STYLE_SPACING } from "config/constants";
+import { STYLE_SPACING } from "@/config/constants";
 
 interface HeroProps {
   title: string;

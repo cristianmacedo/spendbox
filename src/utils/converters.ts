@@ -1,5 +1,5 @@
-import { PersonValue } from "domains/ApiValue";
-import { CharacterValue } from "domains/CharacterValue";
+import { Person } from "@/types/Person";
+import { Character } from "@/types/Character";
 
 export const convertPersonToCharacter = ({
   naturalId,
@@ -7,7 +7,7 @@ export const convertPersonToCharacter = ({
   source,
   finalWorth,
   bios,
-}: PersonValue): CharacterValue => ({
+}: Person): Character => ({
   id: naturalId,
   image: squareImage,
   name,

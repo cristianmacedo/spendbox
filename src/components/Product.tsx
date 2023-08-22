@@ -1,4 +1,4 @@
-import React from "react";
+import Image from "next/image";
 
 import numeral from "numeral";
 
@@ -7,7 +7,6 @@ import {
   Flex,
   Text,
   Badge,
-  Image,
   Center,
   Button,
   HStack,
@@ -15,12 +14,12 @@ import {
   NumberInputField,
 } from "@chakra-ui/react";
 
-import { FORMAT_CURRENCY } from "config/constants";
+import { FORMAT_CURRENCY } from "@/config/constants";
 
-import { ProductValue } from "domains/ProductValue";
+import { Product } from "@/types/Product";
 
 interface ProductProps {
-  product: ProductValue;
+  product: Product;
   onChange: (id: string, count: number) => void;
 }
 
@@ -52,7 +51,7 @@ const Product = ({ product, onChange }: ProductProps): JSX.Element => (
       {product.name}
     </Text>
     <Center w="100%" p="16px">
-      <Image h="80px" src={product.image} alt={product.name} />
+      <Image height={80} src={product.image} alt={product.name} />
     </Center>
     <HStack>
       <Button

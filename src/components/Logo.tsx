@@ -1,5 +1,3 @@
-import React from "react";
-
 import LogoIcon from "assets/logo.svg";
 
 import {

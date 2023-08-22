@@ -1,17 +1,21 @@
-import React from "react";
+import { useMemo } from "react";
 
 import numeral from "numeral";
 
 import { Stack, Heading, Text, Flex, Box, Divider } from "@chakra-ui/react";
 
-import { FORMAT_CURRENCY_SYMBOLS, FORMAT_NUMBER } from "config/constants";
+import { FORMAT_CURRENCY_SYMBOLS, FORMAT_NUMBER } from "@/config/constants";
 
-import { ProductValue } from "domains/ProductValue";
+import { Product } from "@/types/Product";
 
-import { id } from "utils/generators";
+import { id } from "@/utils/generators";
+import { GetStaticProps } from "next";
 
 interface ReceiptProps {
-  products: ProductValue[];
+  id: string;
+  date: string;
+
+  products: Product[];
   balance: number;
   spent: number;
   characterName?: string;
@@ -22,7 +26,7 @@ const SECOND_COLUMN_WIDTH = "2.5%";
 const THIRD_COLUMN_WIDTH = "50%";
 const FOURTH_COLUMN_WIDTH = "25%";
 
-const renderTable = (products: ProductValue[]): JSX.Element => (
+const renderTable = (products: Product[]): JSX.Element => (
   <Stack textTransform="uppercase" fontSize="xs">
     <Stack direction="row" fontWeight="bold">
       <Text w={FIRST_COLUMN_WIDTH}>Qty</Text>
@@ -54,15 +58,13 @@ const Receipt = ({
   balance,
   spent,
   characterName,
+  date,
+  id,
 }: ReceiptProps): JSX.Element => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const filteredProducts = React.useMemo(
+  const filteredProducts = useMemo(
     () => products.filter((product) => product.count > 0),
     [products]
   );
-
-  const date = React.useMemo(() => new Date().toLocaleDateString(), []);
-  const transaction = React.useMemo(() => id(6), []);
 
   return (
     <Stack
@@ -89,22 +91,22 @@ const Receipt = ({
         fontSize="xs"
       >
         <Text textAlign="center">
-          <Box as="span" fontWeight="bold">
+          <Text as="span" fontWeight="bold">
             Transaction:
-          </Box>
-          #{transaction}
+          </Text>
+          #{id}
         </Text>
         <Text textAlign="center">
-          <Box as="span" fontWeight="bold">
+          <Text as="span" fontWeight="bold">
             Date:
-          </Box>
+          </Text>
           {date}
         </Text>
       </Flex>
       <Text fontSize="xs" textTransform="uppercase">
-        <Box as="span" fontWeight="bold">
+        <Text as="span" fontWeight="bold">
           Payment method:
-        </Box>
+        </Text>
         {characterName}&apos;s Fortune
       </Text>
       <Divider />

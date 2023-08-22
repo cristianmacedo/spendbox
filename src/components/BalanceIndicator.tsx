@@ -1,5 +1,3 @@
-import React from "react";
-
 import numeral from "numeral";
 import CountUp from "react-countup";
 
@@ -9,9 +7,9 @@ import {
   FORMAT_BALANCE,
   FORMAT_PERCENTAGE,
   STYLE_SPACING,
-} from "config/constants";
+} from "@/config/constants";
 
-import usePrevious from "hooks/usePrevious";
+import { usePrevious } from "@/hooks/usePrevious";
 
 interface BalanceIndicatorProps {
   start: number;
