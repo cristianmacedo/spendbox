@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import numeral from "numeral";
 
@@ -12,9 +12,6 @@ import { id } from "@/utils/generators";
 import { GetStaticProps } from "next";
 
 interface ReceiptProps {
-  id: string;
-  date: string;
-
   products: Product[];
   balance: number;
   spent: number;
@@ -58,13 +55,18 @@ const Receipt = ({
   balance,
   spent,
   characterName,
-  date,
-  id,
 }: ReceiptProps): JSX.Element => {
+  const [date, setDate] = useState<string>();
+  const [transactionId, setTransactionId] = useState<string>();
   const filteredProducts = useMemo(
     () => products.filter((product) => product.count > 0),
     [products]
   );
+
+  useEffect(() => {
+    setDate(new Date().toLocaleDateString());
+    setTransactionId(id(6));
+  }, []);
 
   return (
     <Stack
@@ -94,7 +96,7 @@ const Receipt = ({
           <Text as="span" fontWeight="bold">
             Transaction:
           </Text>
-          #{id}
+          #{transactionId}
         </Text>
         <Text textAlign="center">
           <Text as="span" fontWeight="bold">

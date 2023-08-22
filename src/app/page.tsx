@@ -20,22 +20,8 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useState, useMemo, useCallback } from "react";
-import { GetStaticProps, InferGetStaticPropsType } from "next";
-import { id } from "@/utils/generators";
 
-export const getInitialProps: GetStaticProps<{
-  date: string;
-  receiptId: string;
-}> = () => {
-  const date = new Date().toLocaleDateString();
-  const receiptId = id(6);
-  return { props: { date, receiptId } };
-};
-
-export default function Home({
-  date,
-  receiptId,
-}: InferGetStaticPropsType<typeof getInitialProps>) {
+export default function Home() {
   const { data: characters, isFetching: isFetchingCharacters } =
     useCharacters();
 
@@ -155,8 +141,6 @@ export default function Home({
           </Center>
         </SimpleGrid>
         <Receipt
-          id={receiptId}
-          date={date}
           products={products}
           balance={currentBalance}
           spent={spent}
