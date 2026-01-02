@@ -8,11 +8,13 @@ export interface Billionaire {
   isCustom?: boolean;
 }
 
+import { StaticImageData } from "next/image";
+
 export interface Product {
   id: string;
   name: string;
   type: string;
-  image: string;
+  image: StaticImageData;
   price: number;
   count: number;
   total: number;
