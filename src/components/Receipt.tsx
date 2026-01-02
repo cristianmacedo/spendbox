@@ -28,6 +28,7 @@ const Receipt = () => {
     "idle"
   );
   const [canShare, setCanShare] = useState(false);
+  const [canCopy, setCanCopy] = useState(false);
 
   const allProducts = getAllProducts();
   const filteredProducts = allProducts.filter((p) => p.count > 0);
@@ -38,6 +39,7 @@ const Receipt = () => {
     setDate(new Date().toLocaleDateString());
     setTransactionId(generateId(6));
     setCanShare(typeof navigator !== "undefined" && !!navigator.share);
+    setCanCopy("ClipboardItem" in window && !("ontouchstart" in window));
   }, []);
 
   const handleShare = async () => {
@@ -185,22 +187,24 @@ const Receipt = () => {
 
       {/* Action buttons */}
       <div className="flex gap-2">
-        <Button
-          onClick={handleCopy}
-          disabled={filteredProducts.length === 0}
-          variant="outline"
-          size="icon"
-          className={cn(
-            copyStatus === "success" && "border-primary-500 text-primary-600"
-          )}
-          title="Copy to clipboard"
-        >
-          {copyStatus === "success" ? (
-            <Check className="w-4 h-4" />
-          ) : (
-            <Copy className="w-4 h-4" />
-          )}
-        </Button>
+        {canCopy && (
+          <Button
+            onClick={handleCopy}
+            disabled={filteredProducts.length === 0}
+            variant="outline"
+            size="icon"
+            className={cn(
+              copyStatus === "success" && "border-primary-500 text-primary-600"
+            )}
+            title="Copy to clipboard"
+          >
+            {copyStatus === "success" ? (
+              <Check className="w-4 h-4" />
+            ) : (
+              <Copy className="w-4 h-4" />
+            )}
+          </Button>
+        )}
         <Button
           onClick={handleDownload}
           disabled={filteredProducts.length === 0}
