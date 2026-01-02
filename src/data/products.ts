@@ -1,4 +1,4 @@
-import { Product } from "@/types/Product";
+import { Product } from "@/types";
 
 import averageHouse from "@/assets/average-house.png";
 import boeing from "@/assets/boeing.png";
@@ -29,77 +29,82 @@ import spaceStation from "@/assets/space-station.png";
 import sportsCar from "@/assets/sports-car.png";
 import streaming from "@/assets/streaming.png";
 import tickets from "@/assets/tickets.png";
+// New icons
+import americanFootball from "@/assets/american-football.png";
+import twitter from "@/assets/twitter.png";
+import bitcoin from "@/assets/bitcoin.png";
 
-export const products: Product[] = [
+// Product definitions with 2025 updated prices
+const productDefinitions = [
   {
-    type: "drink",
+    type: "Drink",
     name: "Starbucks Coffee",
     image: coffee,
-    price: 2,
+    price: 6,
   },
   {
-    type: "food",
+    type: "Food",
     name: "Big Mac",
     image: hamburger,
-    price: 4,
+    price: 6,
   },
   {
-    type: "entertainment",
+    type: "Entertainment",
     name: "Movie Ticket",
     image: tickets,
-    price: 8,
+    price: 15,
   },
   {
-    type: "food",
+    type: "Food",
     name: "Average Restaurant Meal",
     image: meal,
-    price: 20,
+    price: 35,
   },
   {
-    type: "streaming subscription",
-    name: "Netflix - 1 year",
+    type: "Subscription",
+    name: "Netflix - 1 Year",
     image: streaming,
-    price: 170,
+    price: 190,
   },
   {
-    type: "video game console",
-    name: "Playstation 5",
+    type: "Gaming",
+    name: "PlayStation 5 Pro",
     image: playstation,
-    price: 400,
-  },
-  {
-    type: "smartphone",
-    name: "Iphone 13",
-    image: iphone,
     price: 700,
   },
   {
-    type: "laptop",
-    name: "Macbook Pro",
+    type: "Smartphone",
+    name: "iPhone 16 Pro",
+    image: iphone,
+    price: 1_199,
+  },
+  {
+    type: "Laptop",
+    name: "MacBook Pro M4",
     image: macbook,
-    price: 1400,
+    price: 2_000,
   },
   {
-    type: "graphics card",
-    name: "RTX 3080",
+    type: "Graphics Card",
+    name: "RTX 5090",
     image: graphicsCard,
-    price: 1790,
+    price: 2_000,
   },
   {
-    type: "desktop",
+    type: "Desktop",
     name: "Gaming Computer",
     image: computer,
-    price: 2000,
+    price: 3_000,
   },
   {
-    type: "piano",
+    type: "Piano",
     name: "Steinway Baby Grand Piano",
     image: piano,
-    price: 8000,
+    price: 90_000,
   },
   {
     type: "Average Car",
-    name: "Toyotta Corolla",
+    name: "Toyota Corolla",
     image: car,
     price: 25_000,
   },
@@ -107,97 +112,109 @@ export const products: Product[] = [
     type: "Electric Car",
     name: "Tesla Model S",
     image: electricCar,
-    price: 80_000,
+    price: 75_000,
   },
   {
     type: "Property",
     name: "Average House",
     image: averageHouse,
-    price: 150_000,
+    price: 420_000,
   },
   {
     type: "Sports Car",
-    name: "Lamborghini Aventador",
+    name: "Lamborghini Revuelto",
     image: sportsCar,
-    price: 400_000,
+    price: 600_000,
   },
   {
     type: "Helicopter",
-    name: "Bell B206",
+    name: "Bell 505",
     image: helicopter,
-    price: 700_000,
+    price: 2_000_000,
   },
   {
-    type: "Franchise Unit",
+    type: "Franchise",
     name: "McDonald's Franchise",
     image: mcdonalds,
-    price: 1_500_000,
+    price: 2_500_000,
   },
   {
-    type: "Private Jet",
-    name: "Cessna Citation XLS",
-    image: jet,
+    type: "Advertising",
+    name: "Super Bowl Ad (30 sec)",
+    image: americanFootball,
     price: 7_000_000,
   },
   {
-    type: "Trip to Orbit",
-    name: "SpaceX Insipiration 4 Ticket",
+    type: "Private Jet",
+    name: "Gulfstream G700",
+    image: jet,
+    price: 80_000_000,
+  },
+  {
+    type: "Space Trip",
+    name: "SpaceX Orbital Trip",
     image: rocket,
-    price: 50_000_000,
+    price: 55_000_000,
   },
   {
     type: "Rocket",
-    name: "Falcon Heavy",
+    name: "Falcon Heavy Launch",
     image: falcon,
-    price: 90_000_000,
+    price: 97_000_000,
   },
   {
     type: "Aircraft",
-    name: "Boeing 747",
+    name: "Boeing 787 Dreamliner",
     image: boeing,
-    price: 400_000_000,
+    price: 300_000_000,
   },
   {
-    type: "Oil Extraction",
-    name: "Petronius Oil Rig",
+    type: "Oil Rig",
+    name: "Offshore Oil Platform",
     image: oil,
-    price: 550_000_000,
+    price: 650_000_000,
   },
   {
     type: "Cruise Ship",
-    name: "Costa Esmeralda",
+    name: "Icon of the Seas",
     image: cruise,
-    price: 950_000_000,
+    price: 2_000_000_000,
   },
   {
-    type: "Highest Building",
+    type: "Skyscraper",
     name: "Burj Khalifa",
     image: burjKhalifa,
     price: 1_500_000_000,
   },
   {
-    type: "Trip",
-    name: "SpaceX Trip to Mars",
+    type: "Space Mission",
+    name: "Mars Colony Mission",
     image: mars,
-    price: 3_000_000_000,
+    price: 10_000_000_000,
   },
   {
-    type: "Misc",
+    type: "Shopping Spree",
     name: "Everything on Amazon",
     image: packages,
-    price: 12_860_000_000,
+    price: 15_000_000_000,
   },
   {
     type: "Philanthropy",
-    name: "End Homelessness in the US",
+    name: "End US Homelessness",
     image: homeless,
-    price: 20_000_000_000,
+    price: 25_000_000_000,
+  },
+  {
+    type: "Acquisition",
+    name: "Twitter/X (Elon's Price)",
+    image: twitter,
+    price: 44_000_000_000,
   },
   {
     type: "Philanthropy",
-    name: "End World Hunger",
+    name: "End World Hunger (1 Year)",
     image: hunger,
-    price: 135_000_000_000,
+    price: 45_000_000_000,
   },
   {
     type: "Space Station",
@@ -205,11 +222,23 @@ export const products: Product[] = [
     image: spaceStation,
     price: 150_000_000_000,
   },
-].map((product) => ({
+  {
+    type: "Crypto",
+    name: "All Bitcoin in Existence",
+    image: bitcoin,
+    price: 800_000_000_000,
+  },
+];
+
+export const initialProducts: Product[] = productDefinitions.map((product) => ({
   ...product,
-  id: `${product.type.toLocaleLowerCase().replaceAll(" ", "-")}/${product.name
-    .toLocaleLowerCase()
-    .replaceAll(" ", "-")}`,
+  id: `${product.type.toLowerCase().replace(/\s+/g, "-")}/${product.name
+    .toLowerCase()
+    .replace(/\s+/g, "-")}`,
   count: 0,
   total: 0,
 }));
+
+export function getProductById(id: string): Product | undefined {
+  return initialProducts.find((p) => p.id === id);
+}

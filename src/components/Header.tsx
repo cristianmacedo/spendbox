@@ -1,36 +1,29 @@
-import { FaGithub } from "react-icons/fa";
+"use client";
 
-import { Flex, Text, Link } from "@chakra-ui/react";
+import { Github } from "lucide-react";
+import Link from "next/link";
+import ThemeSwitcher from "./ThemeSwitcher";
 
-import { APP_NAME, STYLE_SPACING } from "@/config/constants";
+const APP_NAME = "SpendBox";
 
-const Header = (): JSX.Element => (
-  <Flex
-    as="nav"
-    w="100%"
-    h="56px"
-    bgColor="green.800"
-    align="center"
-    justify="space-between"
-    px={STYLE_SPACING}
-  >
-    <Text fontSize="lg" color="orange.300" fontWeight="bold">
-      {APP_NAME}
-    </Text>
-    <Link
-      href="https://github.com/cristianmacedo/spendbox"
-      color="orange.300"
-      isExternal
-      display="flex"
-      alignItems="center"
-      justifyContent="space-between"
-    >
-      <Text pr="4px" fontWeight="bold">
-        Contribute
-      </Text>
-      <FaGithub />
-    </Link>
-  </Flex>
-);
+const Header = () => {
+  return (
+    <nav className="w-full h-14 bg-primary-800 dark:bg-primary-950 flex items-center justify-between px-4 sm:px-8 lg:px-16">
+      <span className="text-lg text-accent-300 font-bold">{APP_NAME}</span>
+      <div className="flex items-center gap-4">
+        <ThemeSwitcher />
+        <Link
+          href="https://github.com/cristianmacedo/spendbox"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-1.5 text-accent-300 hover:text-accent-200 transition-colors font-bold"
+        >
+          <span className="hidden sm:inline">Contribute</span>
+          <Github className="w-5 h-5" />
+        </Link>
+      </div>
+    </nav>
+  );
+};
 
 export default Header;

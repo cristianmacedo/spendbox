@@ -1,28 +1,24 @@
-import LogoIcon from "assets/logo.svg";
+"use client";
 
-import {
-  chakra,
-  forwardRef,
-  ImageProps,
-  keyframes,
-  usePrefersReducedMotion,
-} from "@chakra-ui/react";
+import Image from "next/image";
+import LogoIcon from "@/assets/logo.svg";
+import { cn } from "@/lib/utils";
 
-const spin = keyframes`
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-`;
+interface LogoProps {
+  className?: string;
+  animate?: boolean;
+}
 
-const Logo = forwardRef<ImageProps, "img">((props, ref) => {
-  const prefersReducedMotion = usePrefersReducedMotion();
-
-  const animation = prefersReducedMotion
-    ? undefined
-    : `${spin} infinite 20s linear`;
-
+const Logo = ({ className, animate = true }: LogoProps) => {
   return (
-    <chakra.img animation={animation} src={LogoIcon} ref={ref} {...props} />
+    <Image
+      src={LogoIcon}
+      alt="SpendBox Logo"
+      className={cn(animate && "animate-spin [animation-duration:20s]", className)}
+      width={32}
+      height={32}
+    />
   );
-});
+};
 
 export default Logo;
