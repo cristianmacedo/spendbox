@@ -1,97 +1,67 @@
-import numeral from "numeral";
+"use client";
+
+import { useRef, useEffect, useState } from "react";
 import CountUp from "react-countup";
+import { useSpendingStore } from "@/store/spending-store";
+import { formatCurrencyWithCents, formatPercent } from "@/lib/format";
+import { Separator } from "./ui/separator";
 
-import { HStack, Text, Divider, Box } from "@chakra-ui/react";
+const BalanceIndicator = () => {
+  const { selectedBillionaire, getSpent, getBalance } = useSpendingStore();
 
-import {
-  FORMAT_BALANCE,
-  FORMAT_PERCENTAGE,
-  STYLE_SPACING,
-} from "@/config/constants";
+  const balance = getBalance();
+  const spent = getSpent();
+  const startingBalance = selectedBillionaire?.netWorth ?? 0;
+  const percentage = startingBalance > 0 ? spent / startingBalance : 0;
 
-import { usePrevious } from "@/hooks/usePrevious";
+  const prevBalanceRef = useRef(balance);
+  const prevPercentageRef = useRef(percentage);
 
-interface BalanceIndicatorProps {
-  start: number;
-  end: number;
-}
+  const [prevBalance, setPrevBalance] = useState(balance);
+  const [prevPercentage, setPrevPercentage] = useState(percentage);
 
-const BalanceIndicator = ({
-  start,
-  end,
-}: BalanceIndicatorProps): JSX.Element => {
-  const spent = start - end;
-  const percentage = Number.isNaN(spent / start) ? 0 : spent / start;
-  const previousPercentage = usePrevious<number>(percentage);
-  const previousEnd = usePrevious<number>(end);
+  useEffect(() => {
+    setPrevBalance(prevBalanceRef.current);
+    setPrevPercentage(prevPercentageRef.current);
+    prevBalanceRef.current = balance;
+    prevPercentageRef.current = percentage;
+  }, [balance, percentage]);
 
   return (
-    <HStack
-      h="64px"
-      px={STYLE_SPACING}
-      py="8px"
-      bgColor="orange.400"
-      justify="center"
-      position="sticky"
-      top="0"
-      zIndex={1}
-    >
-      <Box>
-        <Text
-          fontSize="xs"
-          fontWeight="bold"
-          color="orange.100"
-          textTransform="uppercase"
-        >
+    <div className="h-16 px-4 sm:px-8 lg:px-16 py-2 bg-accent-400 dark:bg-accent-600 flex items-center justify-center gap-4 sticky top-0 z-10">
+      <div>
+        <p className="text-xs font-bold text-accent-100 dark:text-accent-200 uppercase">
           Your balance
-        </Text>
-        <Text
-          fontFamily="mono"
-          fontSize="2xl"
-          fontWeight="bold"
-          color="orange.50"
-          lineHeight="none"
-        >
+        </p>
+        <p className="font-mono text-xl sm:text-2xl font-bold text-accent-50 dark:text-white leading-none">
           <CountUp
-            start={previousEnd}
-            end={end}
-            duration={2}
-            formattingFn={(n: number) => numeral(n).format(FORMAT_BALANCE)}
-            decimals={5}
+            start={prevBalance}
+            end={balance}
+            duration={1.5}
+            formattingFn={(n: number) => formatCurrencyWithCents(n)}
+            decimals={2}
           />
-        </Text>
-      </Box>
-      <Divider
+        </p>
+      </div>
+      <Separator
         orientation="vertical"
-        borderLeftWidth="2px"
-        borderColor="orange.50"
+        className="h-10 w-0.5 bg-accent-50 dark:bg-accent-300"
       />
-      <Box>
-        <Text
-          fontSize="xs"
-          fontWeight="bold"
-          color="orange.100"
-          textTransform="uppercase"
-        >
+      <div>
+        <p className="text-xs font-bold text-accent-100 dark:text-accent-200 uppercase">
           Spent
-        </Text>
-        <Text
-          fontFamily="mono"
-          fontSize="2xl"
-          fontWeight="bold"
-          color="orange.50"
-          lineHeight="none"
-        >
+        </p>
+        <p className="font-mono text-xl sm:text-2xl font-bold text-accent-50 dark:text-white leading-none">
           <CountUp
-            start={previousPercentage}
+            start={prevPercentage}
             end={percentage}
-            duration={2}
-            formattingFn={(n: number) => numeral(n).format(FORMAT_PERCENTAGE)}
+            duration={1.5}
+            formattingFn={(n: number) => formatPercent(n)}
             decimals={6}
           />
-        </Text>
-      </Box>
-    </HStack>
+        </p>
+      </div>
+    </div>
   );
 };
 

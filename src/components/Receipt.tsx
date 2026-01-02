@@ -1,144 +1,256 @@
-import { useEffect, useMemo, useState } from "react";
+"use client";
 
-import numeral from "numeral";
+import { useEffect, useState, useRef } from "react";
+import { Share2, Download, Check, Copy } from "lucide-react";
+import { toPng } from "html-to-image";
+import { useSpendingStore } from "@/store/spending-store";
+import { formatCurrency, formatNumber } from "@/lib/format";
+import { Separator } from "./ui/separator";
+import { Button } from "./ui/button";
+import { cn } from "@/lib/utils";
 
-import { Stack, Heading, Text, Flex, Box, Divider } from "@chakra-ui/react";
+const generateId = (length: number = 6): string => {
+  return Math.random()
+    .toString(36)
+    .substring(2, 2 + length)
+    .toUpperCase();
+};
 
-import { FORMAT_CURRENCY_SYMBOLS, FORMAT_NUMBER } from "@/config/constants";
-
-import { Product } from "@/types/Product";
-
-import { id } from "@/utils/generators";
-import { GetStaticProps } from "next";
-
-interface ReceiptProps {
-  products: Product[];
-  balance: number;
-  spent: number;
-  characterName?: string;
-}
-
-const FIRST_COLUMN_WIDTH = "22.5%";
-const SECOND_COLUMN_WIDTH = "2.5%";
-const THIRD_COLUMN_WIDTH = "50%";
-const FOURTH_COLUMN_WIDTH = "25%";
-
-const renderTable = (products: Product[]): JSX.Element => (
-  <Stack textTransform="uppercase" fontSize="xs">
-    <Stack direction="row" fontWeight="bold">
-      <Text w={FIRST_COLUMN_WIDTH}>Qty</Text>
-      <Text w={SECOND_COLUMN_WIDTH} />
-      <Text w={THIRD_COLUMN_WIDTH}>Item</Text>
-      <Text w={FOURTH_COLUMN_WIDTH}>Amount</Text>
-    </Stack>
-    {products.map((product) => (
-      <Stack key={product.id} direction="row">
-        <Text w={FIRST_COLUMN_WIDTH}>
-          {numeral(product.count).format(FORMAT_NUMBER)}
-        </Text>
-        <Text w={SECOND_COLUMN_WIDTH} textTransform="lowercase">
-          x
-        </Text>
-        <Text w={THIRD_COLUMN_WIDTH} isTruncated>
-          {product.name}
-        </Text>
-        <Text w={FOURTH_COLUMN_WIDTH} textAlign="right">
-          {numeral(product.total).format(FORMAT_CURRENCY_SYMBOLS)}
-        </Text>
-      </Stack>
-    ))}
-  </Stack>
-);
-
-const Receipt = ({
-  products,
-  balance,
-  spent,
-  characterName,
-}: ReceiptProps): JSX.Element => {
-  const [date, setDate] = useState<string>();
-  const [transactionId, setTransactionId] = useState<string>();
-  const filteredProducts = useMemo(
-    () => products.filter((product) => product.count > 0),
-    [products]
+const Receipt = () => {
+  const { getAllProducts, selectedBillionaire, getSpent, getBalance } =
+    useSpendingStore();
+  const receiptRef = useRef<HTMLDivElement>(null);
+  const [date, setDate] = useState<string>("");
+  const [transactionId, setTransactionId] = useState<string>("");
+  const [shareStatus, setShareStatus] = useState<"idle" | "success">("idle");
+  const [copyStatus, setCopyStatus] = useState<"idle" | "success">("idle");
+  const [downloadStatus, setDownloadStatus] = useState<"idle" | "success">(
+    "idle"
   );
+  const [canShare, setCanShare] = useState(false);
+  const [canCopy, setCanCopy] = useState(false);
+
+  const allProducts = getAllProducts();
+  const filteredProducts = allProducts.filter((p) => p.count > 0);
+  const spent = getSpent();
+  const balance = getBalance();
 
   useEffect(() => {
     setDate(new Date().toLocaleDateString());
-    setTransactionId(id(6));
+    setTransactionId(generateId(6));
+    setCanShare(typeof navigator !== "undefined" && !!navigator.share);
+    setCanCopy("ClipboardItem" in window && !("ontouchstart" in window));
   }, []);
 
+  const handleShare = async () => {
+    if (!receiptRef.current || !navigator.share) return;
+
+    try {
+      const dataUrl = await toPng(receiptRef.current, {
+        backgroundColor: "#fafafa",
+        pixelRatio: 2,
+      });
+
+      const blob = await fetch(dataUrl).then((r) => r.blob());
+      const file = new File([blob], "spendbox-receipt.png", {
+        type: "image/png",
+      });
+
+      await navigator.share({
+        title: "My SpendBox Receipt",
+        text: `I spent ${formatCurrency(spent)} of ${
+          selectedBillionaire?.name
+        }'s fortune!`,
+        files: [file],
+      });
+
+      setShareStatus("success");
+      setTimeout(() => setShareStatus("idle"), 2000);
+    } catch (error) {
+      console.error("Share failed:", error);
+    }
+  };
+
+  const handleDownload = async () => {
+    if (!receiptRef.current) return;
+
+    try {
+      const dataUrl = await toPng(receiptRef.current, {
+        backgroundColor: "#fafafa",
+        pixelRatio: 2,
+      });
+
+      const link = document.createElement("a");
+      link.download = "spendbox-receipt.png";
+      link.href = dataUrl;
+      link.click();
+
+      setDownloadStatus("success");
+      setTimeout(() => setDownloadStatus("idle"), 2000);
+    } catch (error) {
+      console.error("Download failed:", error);
+    }
+  };
+
+  const handleCopy = async () => {
+    if (!receiptRef.current) return;
+
+    try {
+      const dataUrl = await toPng(receiptRef.current, {
+        backgroundColor: "#fafafa",
+        pixelRatio: 2,
+      });
+
+      const blob = await fetch(dataUrl).then((r) => r.blob());
+      await navigator.clipboard.write([
+        new ClipboardItem({ "image/png": blob }),
+      ]);
+
+      setCopyStatus("success");
+      setTimeout(() => setCopyStatus("idle"), 2000);
+    } catch (error) {
+      console.error("Copy failed:", error);
+    }
+  };
+
   return (
-    <Stack
-      bgColor="gray.50"
-      color="gray.700"
-      p="16px"
-      borderRadius="md"
-      shadow="base"
-      fontFamily="mono"
-    >
-      <Stack py="8px" align="center" w="100%">
-        <Heading as="h3" size="md">
-          SpendBox
-        </Heading>
-        <Text textAlign="center" fontSize="xs">
-          55-011 Sao Paulo, Brazil
-          <br />
-          Cristian Macedo
-        </Text>
-      </Stack>
-      <Flex
-        justifyContent="space-between"
-        textTransform="uppercase"
-        fontSize="xs"
+    <div className="space-y-3">
+      <div
+        ref={receiptRef}
+        className="bg-surface-50 dark:bg-surface-100 text-surface-700 p-4 rounded-xl shadow-sm font-mono"
       >
-        <Text textAlign="center">
-          <Text as="span" fontWeight="bold">
-            Transaction:
-          </Text>
-          #{transactionId}
-        </Text>
-        <Text textAlign="center">
-          <Text as="span" fontWeight="bold">
-            Date:
-          </Text>
-          {date}
-        </Text>
-      </Flex>
-      <Text fontSize="xs" textTransform="uppercase">
-        <Text as="span" fontWeight="bold">
-          Payment method:
-        </Text>
-        {characterName}&apos;s Fortune
-      </Text>
-      <Divider />
-      {renderTable(filteredProducts)}
-      <Divider />
-      <Flex
-        justifyContent="space-between"
-        textTransform="uppercase"
-        fontSize="xs"
-      >
-        <Text textAlign="center" fontWeight="bold">
-          Subtotal:
-        </Text>
-        <Text textAlign="center">
-          {numeral(spent).format(FORMAT_CURRENCY_SYMBOLS)}
-        </Text>
-      </Flex>
-      <Flex
-        justifyContent="space-between"
-        textTransform="uppercase"
-        fontSize="xs"
-      >
-        <Text textAlign="center" fontWeight="bold">
-          Remaining Balance:
-        </Text>
-        <Text textAlign="center">
-          {numeral(balance).format(FORMAT_CURRENCY_SYMBOLS)}
-        </Text>
-      </Flex>
-    </Stack>
+        <div className="py-2 text-center w-full pb-6">
+          <h3 className="text-lg font-bold">SpendBox</h3>
+          <p className="text-xs text-center">
+            55-011 Sao Paulo, Brazil
+            <br />
+            Cristian Macedo
+          </p>
+        </div>
+
+        <div className="flex justify-between text-xs uppercase">
+          <span>
+            <span className="font-bold">Transaction:</span> #{transactionId}
+          </span>
+          <span>
+            <span className="font-bold">Date:</span> {date}
+          </span>
+        </div>
+
+        <p className="text-xs uppercase mt-1">
+          <span className="font-bold">Payment method:</span>{" "}
+          {selectedBillionaire?.name || "None"}&apos;s Fortune
+        </p>
+
+        <Separator className="my-3 bg-surface-300 dark:bg-surface-300" />
+
+        {/* Table header */}
+        <div className="text-xs uppercase space-y-1">
+          <div className="flex font-bold">
+            <span className="w-[15%]">Qty</span>
+            <span className="w-[5%]" />
+            <span className="w-[50%]">Item</span>
+            <span className="w-[30%] text-right">Amount</span>
+          </div>
+
+          {/* Table rows */}
+          {filteredProducts.map((product) => (
+            <div key={product.id} className="flex">
+              <span className="w-[15%]">{formatNumber(product.count)}</span>
+              <span className="w-[5%] lowercase">x</span>
+              <span className="w-[50%] truncate">{product.name}</span>
+              <span className="w-[30%] text-right">
+                {formatCurrency(product.total)}
+              </span>
+            </div>
+          ))}
+
+          {filteredProducts.length === 0 && (
+            <p className="text-center text-surface-400 py-4 italic">
+              No items yet
+            </p>
+          )}
+        </div>
+
+        <Separator className="my-3 bg-surface-300 dark:bg-surface-300" />
+
+        <div className="flex justify-between text-xs uppercase">
+          <span className="font-bold">Subtotal:</span>
+          <span>{formatCurrency(spent)}</span>
+        </div>
+
+        <div className="flex justify-between text-xs uppercase">
+          <span className="font-bold">Remaining Balance:</span>
+          <span>{formatCurrency(balance)}</span>
+        </div>
+      </div>
+
+      {/* Action buttons */}
+      <div className="flex gap-2">
+        {canCopy && (
+          <Button
+            onClick={handleCopy}
+            disabled={filteredProducts.length === 0}
+            variant="outline"
+            size="icon"
+            className={cn(
+              copyStatus === "success" && "border-primary-500 text-primary-600"
+            )}
+            title="Copy to clipboard"
+          >
+            {copyStatus === "success" ? (
+              <Check className="w-4 h-4" />
+            ) : (
+              <Copy className="w-4 h-4" />
+            )}
+          </Button>
+        )}
+        <Button
+          onClick={handleDownload}
+          disabled={filteredProducts.length === 0}
+          variant="outline"
+          className={cn(
+            "flex-1",
+            downloadStatus === "success" &&
+              "border-primary-500 text-primary-600"
+          )}
+        >
+          {downloadStatus === "success" ? (
+            <>
+              <Check className="w-4 h-4 mr-2" />
+              Downloaded!
+            </>
+          ) : (
+            <>
+              <Download className="w-4 h-4 mr-2" />
+              Download
+            </>
+          )}
+        </Button>
+        {canShare && (
+          <Button
+            onClick={handleShare}
+            disabled={filteredProducts.length === 0}
+            className={cn(
+              "flex-1",
+              shareStatus === "success" && "bg-primary-600 hover:bg-primary-600"
+            )}
+          >
+            {shareStatus === "success" ? (
+              <>
+                <Check className="w-4 h-4 mr-2" />
+                Shared!
+              </>
+            ) : (
+              <>
+                <Share2 className="w-4 h-4 mr-2" />
+                Share
+              </>
+            )}
+          </Button>
+        )}
+      </div>
+    </div>
   );
 };
 
