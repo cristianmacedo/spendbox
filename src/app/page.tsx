@@ -15,11 +15,12 @@ import { useSpendingStore } from "@/store/spending-store";
 import { formatCurrency } from "@/lib/format";
 
 export default function Home() {
-  const { selectedBillionaire, getSpent, products } = useSpendingStore();
+  const { selectedBillionaire, getSpent, getAllProducts } = useSpendingStore();
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const spent = getSpent();
-  const itemCount = products.filter((p) => p.count > 0).length;
+  const allProducts = getAllProducts();
+  const itemCount = allProducts.filter((p) => p.count > 0).length;
 
   const subtitle = selectedBillionaire
     ? `Spend ${selectedBillionaire.name}'s fortune however you want on the available products below!`
@@ -73,7 +74,7 @@ export default function Home() {
             </Button>
           </DrawerTrigger>
           <DrawerContent title="Receipt">
-            <div className="p-4 pb-8 overflow-y-auto max-h-[80vh]">
+            <div className="p-4 pt-8 pb-8 overflow-y-auto max-h-[80vh]">
               <Receipt />
             </div>
           </DrawerContent>

@@ -17,7 +17,7 @@ const generateId = (length: number = 6): string => {
 };
 
 const Receipt = () => {
-  const { products, selectedBillionaire, getSpent, getBalance } =
+  const { getAllProducts, selectedBillionaire, getSpent, getBalance } =
     useSpendingStore();
   const receiptRef = useRef<HTMLDivElement>(null);
   const [date, setDate] = useState<string>("");
@@ -29,7 +29,8 @@ const Receipt = () => {
   );
   const [canShare, setCanShare] = useState(false);
 
-  const filteredProducts = products.filter((p) => p.count > 0);
+  const allProducts = getAllProducts();
+  const filteredProducts = allProducts.filter((p) => p.count > 0);
   const spent = getSpent();
   const balance = getBalance();
 

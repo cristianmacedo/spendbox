@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Minus, Plus } from "lucide-react";
+import { Minus, Plus, Package, X } from "lucide-react";
 import { Product } from "@/types";
 import { formatCurrency } from "@/lib/format";
 import { useSpendingStore } from "@/store/spending-store";
@@ -13,8 +13,12 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
-  const { updateProductCount, selectedBillionaire, getBalance } =
-    useSpendingStore();
+  const {
+    updateProductCount,
+    selectedBillionaire,
+    getBalance,
+    removeCustomProduct,
+  } = useSpendingStore();
 
   const canBuy = selectedBillionaire && getBalance() >= product.price;
 
@@ -37,8 +41,23 @@ const ProductCard = ({ product }: ProductCardProps) => {
     }
   };
 
+  const handleRemoveCustom = () => {
+    removeCustomProduct(product.id);
+  };
+
   return (
-    <div className="bg-primary-100 dark:bg-primary-950 p-3 rounded-xl flex flex-col w-full justify-between shadow-sm hover:shadow-md transition-shadow">
+    <div className="bg-primary-100 dark:bg-primary-950 p-3 rounded-xl flex flex-col w-full justify-between shadow-sm hover:shadow-md transition-shadow relative">
+      {/* Remove button for custom products */}
+      {product.isCustom && (
+        <button
+          onClick={handleRemoveCustom}
+          className="absolute top-2 right-2 p-1 rounded-full bg-surface-200 dark:bg-primary-800 hover:bg-red-100 dark:hover:bg-red-900/50 text-surface-500 hover:text-red-500 dark:text-primary-400 dark:hover:text-red-400 transition-colors"
+          title="Remove custom product"
+        >
+          <X className="w-3.5 h-3.5" />
+        </button>
+      )}
+
       <div className="flex justify-between items-start mb-2">
         <span className="text-primary-600 dark:text-primary-400 font-bold tracking-wide text-xs uppercase opacity-80">
           {product.type}
@@ -48,18 +67,24 @@ const ProductCard = ({ product }: ProductCardProps) => {
         </span>
       </div>
 
-      <h3 className="text-lg font-bold text-primary-800 dark:text-primary-100 mb-2">
+      <h3 className="text-lg font-bold text-primary-800 dark:text-primary-100 mb-2 pr-6">
         {product.name}
       </h3>
 
       <div className="flex items-center justify-center p-4">
-        <Image
-          src={product.image}
-          alt={product.name}
-          height={80}
-          width={80}
-          className="object-contain"
-        />
+        {product.image ? (
+          <Image
+            src={product.image}
+            alt={product.name}
+            height={80}
+            width={80}
+            className="object-contain"
+          />
+        ) : (
+          <div className="w-20 h-20 rounded-full bg-primary-200 dark:bg-primary-800 flex items-center justify-center">
+            <Package className="w-10 h-10 text-primary-500 dark:text-primary-400" />
+          </div>
+        )}
       </div>
 
       <div className="flex items-center gap-2 mt-auto">

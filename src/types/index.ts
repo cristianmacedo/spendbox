@@ -14,10 +14,11 @@ export interface Product {
   id: string;
   name: string;
   type: string;
-  image: StaticImageData;
+  image: StaticImageData | string;
   price: number;
   count: number;
   total: number;
+  isCustom?: boolean;
 }
 
 export interface SpendingState {
