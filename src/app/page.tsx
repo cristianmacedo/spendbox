@@ -8,6 +8,7 @@ import BillionairePicker from "@/components/BillionairePicker";
 import BalanceIndicator from "@/components/BalanceIndicator";
 import ProductGrid from "@/components/ProductGrid";
 import Receipt from "@/components/Receipt";
+import WealthComparison from "@/components/WealthComparison";
 import { Button } from "@/components/ui/button";
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 import { useSpendingStore } from "@/store/spending-store";
@@ -31,6 +32,7 @@ export default function Home() {
         <BillionairePicker />
       </Hero>
       <BalanceIndicator />
+      <WealthComparison />
       <main className="px-4 sm:px-8 lg:px-16 my-8 pb-24 xl:pb-8">
         <div className="grid grid-cols-1 xl:grid-cols-[1fr_500px] gap-6">
           <div className="relative">

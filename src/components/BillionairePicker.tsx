@@ -20,8 +20,8 @@ const BillionairePicker = () => {
   };
 
   return (
-    <div className="max-w-md w-full space-y-2">
-      <p className="text-sm font-bold text-primary-100 mb-1">
+    <div className="max-w-md w-full">
+      <p className="text-sm font-bold text-primary-100 mb-2">
         Choose a billionaire
       </p>
 
@@ -71,7 +71,7 @@ const BillionairePicker = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ delay: 0.5 }}
-            className="text-sm font-medium italic text-primary-200 mt-4 max-w-xs"
+            className="text-sm font-medium italic text-primary-200 mt-5"
           >
             &quot;{selectedBillionaire.bio}&quot;
           </motion.p>
