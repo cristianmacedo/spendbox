@@ -36,3 +36,14 @@
 ::-webkit-scrollbar-thumb:hover {
   @apply bg-surface-400 dark:bg-primary-600;
 }
+
+/* Shimmer animation for header */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  50%,
+  100% {
+    transform: translateX(100%);
+  }
+}
