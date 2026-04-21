@@ -12,7 +12,8 @@ import { Billionaire } from "@/types";
 import CustomBillionaireModal from "./CustomBillionaireModal";
 
 const BillionairePicker = () => {
-  const { selectedBillionaire, selectBillionaire } = useSpendingStore();
+  const selectedBillionaire = useSpendingStore((state) => state.selectedBillionaire);
+  const selectBillionaire = useSpendingStore((state) => state.selectBillionaire);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleSelect = (billionaire: Billionaire) => {
@@ -119,7 +120,6 @@ const BillionaireCard = ({
           width={32}
           height={32}
           className="w-8 h-8 rounded-full object-cover"
-          unoptimized
         />
       ) : (
         <div className="w-8 h-8 rounded-full bg-primary-200 dark:bg-primary-800 flex items-center justify-center">
