@@ -36,7 +36,8 @@ export const useSpendingStore = create<SpendingState>((set, get) => ({
   selectedBillionaire: null,
   products: createInitialProducts(),
   customProducts: [],
-  ...createReceiptMetadata(),
+  receiptDate: "",
+  receiptTransactionId: "",
 
   selectBillionaire: (billionaire) => {
     const { customProducts } = get();
@@ -129,9 +130,6 @@ export const selectAllProducts = (state: SpendingState) => [
   ...state.customProducts,
 ];
 
-export const selectPurchasedProducts = (state: SpendingState) =>
-  selectAllProducts(state).filter((product) => product.count > 0);
-
 export const selectSpent = (state: SpendingState) =>
   selectAllProducts(state).reduce(
     (total, product) => total + product.price * product.count,
@@ -142,7 +140,14 @@ export const selectBalance = (state: SpendingState) =>
   state.selectedBillionaire ? state.selectedBillionaire.netWorth - selectSpent(state) : 0;
 
 export const selectItemCount = (state: SpendingState) =>
-  selectPurchasedProducts(state).length;
+  state.products.reduce(
+    (count, product) => count + (product.count > 0 ? 1 : 0),
+    0
+  ) +
+  state.customProducts.reduce(
+    (count, product) => count + (product.count > 0 ? 1 : 0),
+    0
+  );
 
 export const selectProductById =
   (productId: string) => (state: SpendingState) =>

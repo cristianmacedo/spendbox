@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { Plus } from "lucide-react";
 import { useSpendingStore } from "@/store/spending-store";
@@ -8,11 +8,16 @@ import ProductCard from "./ProductCard";
 import CustomProductModal from "./CustomProductModal";
 
 const ProductGrid = () => {
-  const productIds = useSpendingStore((state) => [
-    ...state.products.map((product) => product.id),
-    ...state.customProducts.map((product) => product.id),
-  ]);
+  const products = useSpendingStore((state) => state.products);
+  const customProducts = useSpendingStore((state) => state.customProducts);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const productIds = useMemo(
+    () => [
+      ...products.map((product) => product.id),
+      ...customProducts.map((product) => product.id),
+    ],
+    [products, customProducts]
+  );
 
   return (
     <>

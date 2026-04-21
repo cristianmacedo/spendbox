@@ -1,14 +1,9 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import { Share2, Download, Check, Copy } from "lucide-react";
 import { toPng } from "html-to-image";
-import {
-  selectBalance,
-  selectPurchasedProducts,
-  selectSpent,
-  useSpendingStore,
-} from "@/store/spending-store";
+import { selectBalance, selectSpent, useSpendingStore } from "@/store/spending-store";
 import { formatCurrency, formatNumber } from "@/lib/format";
 import { Separator } from "./ui/separator";
 import { Button } from "./ui/button";
@@ -20,7 +15,8 @@ const Receipt = () => {
   const receiptTransactionId = useSpendingStore(
     (state) => state.receiptTransactionId
   );
-  const filteredProducts = useSpendingStore(selectPurchasedProducts);
+  const products = useSpendingStore((state) => state.products);
+  const customProducts = useSpendingStore((state) => state.customProducts);
   const spent = useSpendingStore(selectSpent);
   const balance = useSpendingStore(selectBalance);
   const receiptRef = useRef<HTMLDivElement>(null);
@@ -31,6 +27,11 @@ const Receipt = () => {
   );
   const [canShare, setCanShare] = useState(false);
   const [canCopy, setCanCopy] = useState(false);
+  const filteredProducts = useMemo(
+    () =>
+      [...products, ...customProducts].filter((product) => product.count > 0),
+    [products, customProducts]
+  );
 
   useEffect(() => {
     setCanShare(typeof navigator !== "undefined" && !!navigator.share);
