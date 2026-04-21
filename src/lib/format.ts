@@ -20,6 +20,20 @@ const percentFormatter = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 4,
 });
 
+const humanNumberMultipliers: Record<string, number> = {
+  k: 1_000,
+  thousand: 1_000,
+  m: 1_000_000,
+  mn: 1_000_000,
+  million: 1_000_000,
+  b: 1_000_000_000,
+  bn: 1_000_000_000,
+  billion: 1_000_000_000,
+  t: 1_000_000_000_000,
+  tn: 1_000_000_000_000,
+  trillion: 1_000_000_000_000,
+};
+
 export function formatCurrency(value: number): string {
   return currencyFormatter.format(value);
 }
@@ -50,4 +64,35 @@ export function formatCompact(value: number): string {
     return `$${(value / 1_000).toFixed(1)}K`;
   }
   return `$${value}`;
+}
+
+export function parseHumanNumber(value: string): number | null {
+  const normalized = value
+    .trim()
+    .toLowerCase()
+    .replace(/\$/g, "")
+    .replace(/,/g, "")
+    .replace(/\s+/g, " ");
+
+  if (!normalized) {
+    return null;
+  }
+
+  const match = normalized.match(
+    /^(\d+(?:\.\d+)?)\s*(k|m|mn|b|bn|t|tn|thousand|million|billion|trillion)?$/
+  );
+
+  if (!match) {
+    return null;
+  }
+
+  const numericValue = Number.parseFloat(match[1]);
+  if (!Number.isFinite(numericValue)) {
+    return null;
+  }
+
+  const suffix = match[2];
+  const multiplier = suffix ? humanNumberMultipliers[suffix] : 1;
+
+  return numericValue * multiplier;
 }

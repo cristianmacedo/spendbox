@@ -236,7 +236,6 @@ export const initialProducts: Product[] = productDefinitions.map((product) => ({
     .toLowerCase()
     .replace(/\s+/g, "-")}`,
   count: 0,
-  total: 0,
 }));
 
 export function getProductById(id: string): Product | undefined {

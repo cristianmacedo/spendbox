@@ -13,6 +13,7 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { createCustomBillionaire } from "@/data/billionaires";
 import { Billionaire } from "@/types";
+import { formatCurrency, parseHumanNumber } from "@/lib/format";
 
 interface CustomBillionaireModalProps {
   isOpen: boolean;
@@ -27,25 +28,15 @@ const CustomBillionaireModal = ({
 }: CustomBillionaireModalProps) => {
   const [name, setName] = useState("");
   const [amount, setAmount] = useState("");
+  const parsedAmount = parseHumanNumber(amount);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const netWorth = parseFloat(amount.replace(/[^0-9.]/g, ""));
-    if (name && netWorth > 0) {
-      onSubmit(createCustomBillionaire(name, netWorth));
+    if (name.trim() && parsedAmount && parsedAmount > 0) {
+      onSubmit(createCustomBillionaire(name.trim(), parsedAmount));
       setName("");
       setAmount("");
     }
-  };
-
-  const formatAmountInput = (value: string) => {
-    // Remove non-numeric characters except decimal
-    const numeric = value.replace(/[^0-9]/g, "");
-    if (!numeric) return "";
-
-    // Format with commas
-    const number = parseInt(numeric, 10);
-    return number.toLocaleString("en-US");
   };
 
   return (
@@ -81,19 +72,29 @@ const CustomBillionaireModal = ({
             </label>
             <Input
               id="amount"
-              placeholder="1,000,000,000"
+              placeholder="e.g. 750000000, 2.5b, 1 billion"
               value={amount}
-              onChange={(e) => setAmount(formatAmountInput(e.target.value))}
+              onChange={(e) => setAmount(e.target.value)}
+              inputMode="decimal"
+              autoComplete="off"
             />
             <p className="text-xs text-surface-500">
-              Try entering amounts like 1 billion, 100 million, etc.
+              Supports plain numbers and suffixes like `k`, `m`, `b`, or words
+              like &quot;million&quot; and &quot;billion&quot;.
             </p>
+            {amount && (
+              <p className="text-xs text-surface-500">
+                {parsedAmount
+                  ? `Parsed amount: ${formatCurrency(parsedAmount)}`
+                  : "Enter a valid amount such as 2.5m or 1 billion."}
+              </p>
+            )}
           </div>
           <DialogFooter>
             <Button type="button" variant="outline" onClick={onClose}>
               Cancel
             </Button>
-            <Button type="submit" disabled={!name || !amount}>
+            <Button type="submit" disabled={!name.trim() || !parsedAmount}>
               Start Spending
             </Button>
           </DialogFooter>

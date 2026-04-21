@@ -11,16 +11,18 @@ import Receipt from "@/components/Receipt";
 import WealthComparison from "@/components/WealthComparison";
 import { Button } from "@/components/ui/button";
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
-import { useSpendingStore } from "@/store/spending-store";
+import {
+  selectItemCount,
+  selectSpent,
+  useSpendingStore,
+} from "@/store/spending-store";
 import { formatCurrency } from "@/lib/format";
 
 export default function Home() {
-  const { selectedBillionaire, getSpent, getAllProducts } = useSpendingStore();
+  const selectedBillionaire = useSpendingStore((state) => state.selectedBillionaire);
+  const spent = useSpendingStore(selectSpent);
+  const itemCount = useSpendingStore(selectItemCount);
   const [drawerOpen, setDrawerOpen] = useState(false);
-
-  const spent = getSpent();
-  const allProducts = getAllProducts();
-  const itemCount = allProducts.filter((p) => p.count > 0).length;
 
   const subtitle = selectedBillionaire
     ? `Spend ${selectedBillionaire.name}'s fortune however you want on the available products below!`

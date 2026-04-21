@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { Briefcase, DollarSign } from "lucide-react";
-import { useSpendingStore } from "@/store/spending-store";
+import { selectSpent, useSpendingStore } from "@/store/spending-store";
 import { formatNumber, formatCurrency } from "@/lib/format";
 import {
   Tooltip,
@@ -15,8 +15,8 @@ import {
 const MEDIAN_SALARY = 59_000;
 
 const WealthComparison = () => {
-  const { selectedBillionaire, getSpent } = useSpendingStore();
-  const spent = getSpent();
+  const selectedBillionaire = useSpendingStore((state) => state.selectedBillionaire);
+  const spent = useSpendingStore(selectSpent);
 
   if (!selectedBillionaire || spent === 0) {
     return null;

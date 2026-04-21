@@ -8,22 +8,23 @@ import ProductCard from "./ProductCard";
 import CustomProductModal from "./CustomProductModal";
 
 const ProductGrid = () => {
-  const { products, customProducts } = useSpendingStore();
+  const productIds = useSpendingStore((state) => [
+    ...state.products.map((product) => product.id),
+    ...state.customProducts.map((product) => product.id),
+  ]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const allProducts = [...products, ...customProducts];
 
   return (
     <>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-        {allProducts.map((product, index) => (
+        {productIds.map((productId, index) => (
           <motion.div
-            key={product.id}
+            key={productId}
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: index * 0.03 }}
           >
-            <ProductCard product={product} />
+            <ProductCard productId={productId} />
           </motion.div>
         ))}
 
@@ -31,7 +32,7 @@ const ProductGrid = () => {
         <motion.button
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: allProducts.length * 0.03 }}
+          transition={{ delay: productIds.length * 0.03 }}
           onClick={() => setIsModalOpen(true)}
           className="bg-primary-100/50 dark:bg-primary-950/50 p-3 rounded-xl flex flex-col items-center justify-center min-h-[240px] border-2 border-dashed border-primary-300 dark:border-primary-700 hover:border-primary-500 dark:hover:border-primary-500 hover:bg-primary-100 dark:hover:bg-primary-900/50 transition-all cursor-pointer group"
         >

@@ -3,25 +3,27 @@
 import { useEffect, useState, useRef } from "react";
 import { Share2, Download, Check, Copy } from "lucide-react";
 import { toPng } from "html-to-image";
-import { useSpendingStore } from "@/store/spending-store";
+import {
+  selectBalance,
+  selectPurchasedProducts,
+  selectSpent,
+  useSpendingStore,
+} from "@/store/spending-store";
 import { formatCurrency, formatNumber } from "@/lib/format";
 import { Separator } from "./ui/separator";
 import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
 
-const generateId = (length: number = 6): string => {
-  return Math.random()
-    .toString(36)
-    .substring(2, 2 + length)
-    .toUpperCase();
-};
-
 const Receipt = () => {
-  const { getAllProducts, selectedBillionaire, getSpent, getBalance } =
-    useSpendingStore();
+  const selectedBillionaire = useSpendingStore((state) => state.selectedBillionaire);
+  const receiptDate = useSpendingStore((state) => state.receiptDate);
+  const receiptTransactionId = useSpendingStore(
+    (state) => state.receiptTransactionId
+  );
+  const filteredProducts = useSpendingStore(selectPurchasedProducts);
+  const spent = useSpendingStore(selectSpent);
+  const balance = useSpendingStore(selectBalance);
   const receiptRef = useRef<HTMLDivElement>(null);
-  const [date, setDate] = useState<string>("");
-  const [transactionId, setTransactionId] = useState<string>("");
   const [shareStatus, setShareStatus] = useState<"idle" | "success">("idle");
   const [copyStatus, setCopyStatus] = useState<"idle" | "success">("idle");
   const [downloadStatus, setDownloadStatus] = useState<"idle" | "success">(
@@ -30,14 +32,7 @@ const Receipt = () => {
   const [canShare, setCanShare] = useState(false);
   const [canCopy, setCanCopy] = useState(false);
 
-  const allProducts = getAllProducts();
-  const filteredProducts = allProducts.filter((p) => p.count > 0);
-  const spent = getSpent();
-  const balance = getBalance();
-
   useEffect(() => {
-    setDate(new Date().toLocaleDateString());
-    setTransactionId(generateId(6));
     setCanShare(typeof navigator !== "undefined" && !!navigator.share);
     setCanCopy("ClipboardItem" in window && !("ontouchstart" in window));
   }, []);
@@ -130,10 +125,10 @@ const Receipt = () => {
 
         <div className="flex justify-between text-xs uppercase">
           <span>
-            <span className="font-bold">Transaction:</span> #{transactionId}
+            <span className="font-bold">Transaction:</span> #{receiptTransactionId}
           </span>
           <span>
-            <span className="font-bold">Date:</span> {date}
+            <span className="font-bold">Date:</span> {receiptDate}
           </span>
         </div>
 
@@ -160,7 +155,7 @@ const Receipt = () => {
               <span className="w-[5%] lowercase">x</span>
               <span className="w-[50%] truncate">{product.name}</span>
               <span className="w-[30%] text-right">
-                {formatCurrency(product.total)}
+                {formatCurrency(product.price * product.count)}
               </span>
             </div>
           ))}

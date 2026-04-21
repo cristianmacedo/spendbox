@@ -2,25 +2,31 @@
 
 import Image from "next/image";
 import { Minus, Plus, Package, X } from "lucide-react";
-import { Product } from "@/types";
 import { formatCurrency } from "@/lib/format";
-import { useSpendingStore } from "@/store/spending-store";
+import {
+  selectBalance,
+  selectProductById,
+  useSpendingStore,
+} from "@/store/spending-store";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 
 interface ProductCardProps {
-  product: Product;
+  productId: string;
 }
 
-const ProductCard = ({ product }: ProductCardProps) => {
-  const {
-    updateProductCount,
-    selectedBillionaire,
-    getBalance,
-    removeCustomProduct,
-  } = useSpendingStore();
+const ProductCard = ({ productId }: ProductCardProps) => {
+  const product = useSpendingStore(selectProductById(productId));
+  const updateProductCount = useSpendingStore((state) => state.updateProductCount);
+  const removeCustomProduct = useSpendingStore((state) => state.removeCustomProduct);
+  const selectedBillionaire = useSpendingStore((state) => state.selectedBillionaire);
+  const balance = useSpendingStore(selectBalance);
 
-  const canBuy = selectedBillionaire && getBalance() >= product.price;
+  if (!product) {
+    return null;
+  }
+
+  const canBuy = Boolean(selectedBillionaire && balance >= product.price);
 
   const handleBuy = () => {
     updateProductCount(product.id, product.count + 1);

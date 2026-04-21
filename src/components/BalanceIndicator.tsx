@@ -2,15 +2,18 @@
 
 import { useRef, useEffect, useState } from "react";
 import CountUp from "react-countup";
-import { useSpendingStore } from "@/store/spending-store";
+import {
+  selectBalance,
+  selectSpent,
+  useSpendingStore,
+} from "@/store/spending-store";
 import { formatCurrencyWithCents, formatPercent } from "@/lib/format";
 import { Separator } from "./ui/separator";
 
 const BalanceIndicator = () => {
-  const { selectedBillionaire, getSpent, getBalance } = useSpendingStore();
-
-  const balance = getBalance();
-  const spent = getSpent();
+  const selectedBillionaire = useSpendingStore((state) => state.selectedBillionaire);
+  const balance = useSpendingStore(selectBalance);
+  const spent = useSpendingStore(selectSpent);
   const startingBalance = selectedBillionaire?.netWorth ?? 0;
   const percentage = startingBalance > 0 ? spent / startingBalance : 0;
 

@@ -12,6 +12,7 @@ import {
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { useSpendingStore } from "@/store/spending-store";
+import { formatCurrency, parseHumanNumber } from "@/lib/format";
 
 interface CustomProductModalProps {
   isOpen: boolean;
@@ -19,29 +20,19 @@ interface CustomProductModalProps {
 }
 
 const CustomProductModal = ({ isOpen, onClose }: CustomProductModalProps) => {
-  const { addCustomProduct } = useSpendingStore();
+  const addCustomProduct = useSpendingStore((state) => state.addCustomProduct);
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
+  const parsedPrice = parseHumanNumber(price);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const priceValue = parseFloat(price.replace(/[^0-9.]/g, ""));
-    if (name && priceValue > 0) {
-      addCustomProduct(name, priceValue);
+    if (name.trim() && parsedPrice && parsedPrice > 0) {
+      addCustomProduct(name.trim(), parsedPrice);
       setName("");
       setPrice("");
       onClose();
     }
-  };
-
-  const formatPriceInput = (value: string) => {
-    // Remove non-numeric characters except decimal
-    const numeric = value.replace(/[^0-9]/g, "");
-    if (!numeric) return "";
-
-    // Format with commas
-    const number = parseInt(numeric, 10);
-    return number.toLocaleString("en-US");
   };
 
   return (
@@ -77,19 +68,29 @@ const CustomProductModal = ({ isOpen, onClose }: CustomProductModalProps) => {
             </label>
             <Input
               id="product-price"
-              placeholder="1,000,000"
+              placeholder="e.g. 50000, 2.5m, 750 thousand"
               value={price}
-              onChange={(e) => setPrice(formatPriceInput(e.target.value))}
+              onChange={(e) => setPrice(e.target.value)}
+              inputMode="decimal"
+              autoComplete="off"
             />
             <p className="text-xs text-surface-500">
-              Enter any price - from a coffee to a country&apos;s GDP!
+              Supports plain numbers and suffixes like `k`, `m`, `b`, or words
+              like &quot;million&quot; and &quot;billion&quot;.
             </p>
+            {price && (
+              <p className="text-xs text-surface-500">
+                {parsedPrice
+                  ? `Parsed price: ${formatCurrency(parsedPrice)}`
+                  : "Enter a valid price such as 500k or 1.25 million."}
+              </p>
+            )}
           </div>
           <DialogFooter>
             <Button type="button" variant="outline" onClick={onClose}>
               Cancel
             </Button>
-            <Button type="submit" disabled={!name || !price}>
+            <Button type="submit" disabled={!name.trim() || !parsedPrice}>
               Add Product
             </Button>
           </DialogFooter>
